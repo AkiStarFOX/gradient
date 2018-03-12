@@ -284,6 +284,9 @@ public class Render implements GLSurfaceView.Renderer {
 
     private float _tickTimeX;
     private float _tickTimeY;
+    private float _gradient2_tickTimeY;
+    private float _gradient3_tickTimeY;
+    private float _gradient4_tickTimeY;
     private float _gradient2_tickTimeX;
     private float _gradient3_tickTimeX;
     private float _gradient4_tickTimeX;
@@ -389,10 +392,10 @@ public class Render implements GLSurfaceView.Renderer {
         _gradient4_randomColor3 = GLES20.glGetUniformLocation(_programId, "u_gradient4_color3");
         _gradient4_uAlpha = GLES20.glGetUniformLocation(_programId, "u_gradient4_Alpha");
 
-        _uGradientType = GLES20.glGetUniformLocation(_programId,"u_gradient1_Type");
-        _gradient2_uGradientType = GLES20.glGetUniformLocation(_programId,"u_gradient2_Type");
-        _gradient3_uGradientType = GLES20.glGetUniformLocation(_programId,"u_gradient3_Type");
-        _gradient4_uGradientType = GLES20.glGetUniformLocation(_programId,"u_gradient4_Type");
+        _uGradientType = GLES20.glGetUniformLocation(_programId, "u_gradient1_Type");
+        _gradient2_uGradientType = GLES20.glGetUniformLocation(_programId, "u_gradient2_Type");
+        _gradient3_uGradientType = GLES20.glGetUniformLocation(_programId, "u_gradient3_Type");
+        _gradient4_uGradientType = GLES20.glGetUniformLocation(_programId, "u_gradient4_Type");
 
 
         image = BitmapFactory.decodeResource(_context.getResources(), R.drawable.unnamed);
@@ -557,10 +560,10 @@ public class Render implements GLSurfaceView.Renderer {
         GLES20.glUniform1f(_gradient3_uAlpha, MainActivity.gradient3_alphaValue / 100f);
         GLES20.glUniform1f(_gradient4_uAlpha, MainActivity.gradient4_alphaValue / 100f);
 
-        GLES20.glUniform1f(_uGradientType,MainActivity.typeofGrad);
-        GLES20.glUniform1f(_gradient2_uGradientType,MainActivity.gradient2_typeOfGrad);
-        GLES20.glUniform1f(_gradient3_uGradientType,MainActivity.gradient3_typeOfGrad);
-        GLES20.glUniform1f(_gradient4_uGradientType,MainActivity.gradient4_typeOfGrad);
+        GLES20.glUniform1f(_uGradientType, MainActivity.typeofGrad);
+        GLES20.glUniform1f(_gradient2_uGradientType, MainActivity.gradient2_typeOfGrad);
+        GLES20.glUniform1f(_gradient3_uGradientType, MainActivity.gradient3_typeOfGrad);
+        GLES20.glUniform1f(_gradient4_uGradientType, MainActivity.gradient4_typeOfGrad);
 
 
         randomTrans();
@@ -761,6 +764,19 @@ public class Render implements GLSurfaceView.Renderer {
                 vverx = false;
             }
         }
+        if (MainActivity.typeMove==3 || MainActivity.typeMove==4){
+            float xCenter = MainActivity.xCenterValue/100;
+            float yCenter = MainActivity.yCenterValue/100;
+            float rCenter = MainActivity.rCenterValue/100;
+            dvijenieX=(float) (xCenter+rCenter*Math.cos(_tickTimeY));
+            dvijenieY=(float) (yCenter+rCenter*Math.sin(_tickTimeY));
+            if(MainActivity.typeMove==3 ) {
+                _tickTimeY += MainActivity.speedMoveValue / 1000;
+            }
+            if(MainActivity.typeMove==4 ){
+                _tickTimeY -= MainActivity.speedMoveValue / 1000;
+            }
+        }
 
     }
 
@@ -851,6 +867,19 @@ public class Render implements GLSurfaceView.Renderer {
             }
             if (_gradient2_dvijenieX <= 0.0) {
                 _gradient2_vverx = false;
+            }
+        }
+        if (MainActivity.gradient2_typeMove==3 || MainActivity.gradient2_typeMove==4) {
+            float xCenter = MainActivity.gradient2_xCenterValue / 100;
+            float yCenter = MainActivity.gradient2_yCenterValue / 100;
+            float rCenter = MainActivity.gradient2_rCenterValue / 100;
+            _gradient2_dvijenieX = (float) (xCenter + rCenter * Math.cos(_gradient2_tickTimeY));
+            _gradient2_dvijenieY = (float) (yCenter + rCenter * Math.sin(_gradient2_tickTimeY));
+            if(MainActivity.gradient2_typeMove==3 ) {
+                _gradient2_tickTimeY += MainActivity.gradient2_speedMoveValue / 1000;
+            }
+            if(MainActivity.gradient2_typeMove==4 ){
+                _gradient2_tickTimeY -= MainActivity.gradient2_speedMoveValue / 1000;
             }
         }
 
@@ -944,50 +973,63 @@ public class Render implements GLSurfaceView.Renderer {
                 }
             }
         }
+        if (MainActivity.gradient3_typeMove==3 || MainActivity.gradient3_typeMove==4) {
+            float xCenter = MainActivity.gradient3_xCenterValue / 100;
+            float yCenter = MainActivity.gradient3_yCenterValue / 100;
+            float rCenter = MainActivity.gradient3_rCenterValue / 100;
+            _gradient3_dvijenieX = (float) (xCenter + rCenter * Math.cos(_gradient3_tickTimeY));
+            _gradient3_dvijenieY = (float) (yCenter + rCenter * Math.sin(_gradient3_tickTimeY));
+            if(MainActivity.gradient3_typeMove==3 ) {
+                _gradient3_tickTimeY += MainActivity.gradient3_speedMoveValue / 1000;
+            }
+            if(MainActivity.gradient3_typeMove==4 ){
+                _gradient3_tickTimeY -= MainActivity.gradient3_speedMoveValue / 1000;
+            }
+        }
 
     }
 
     public void grad4_randomTrans() {
         if (MainActivity.gradient4_typeMove == 1) {
-        if (_gradient4_tuda) {
-            _gradient4_dvijenieX += MainActivity.gradient4_speedMoveValue / 5000;
-            if (_gradient4_dvijenieX >= 1.0) {
-                _gradient4_dvijenieX = 1.0f;
+            if (_gradient4_tuda) {
+                _gradient4_dvijenieX += MainActivity.gradient4_speedMoveValue / 5000;
+                if (_gradient4_dvijenieX >= 1.0) {
+                    _gradient4_dvijenieX = 1.0f;
+                }
             }
-        }
-        if (!_gradient4_tuda) {
-            _gradient4_dvijenieX -= MainActivity.gradient4_speedMoveValue / 5000;
-            if (_gradient4_dvijenieX <= 0) {
-                _gradient4_dvijenieX = 0.0f;
+            if (!_gradient4_tuda) {
+                _gradient4_dvijenieX -= MainActivity.gradient4_speedMoveValue / 5000;
+                if (_gradient4_dvijenieX <= 0) {
+                    _gradient4_dvijenieX = 0.0f;
+                }
             }
-        }
-        if (_gradient4_dvijenieY <= 0) {
-            _gradient4_tuda = true;
-        }
-        if (_gradient4_dvijenieY >= 1.0) {
-            _gradient4_tuda = false;
-
-        }
-        if (_gradient4_vverx) {
-            _gradient4_dvijenieY += MainActivity.gradient4_speedMoveValue / 5000;
-            if (_gradient4_dvijenieY >= 1.0) {
-                _gradient4_dvijenieY = 1.0f;
-            }
-        }
-        if (!_gradient4_vverx) {
-            _gradient4_dvijenieY -= MainActivity.gradient4_speedMoveValue / 5000;
             if (_gradient4_dvijenieY <= 0) {
-                _gradient4_dvijenieY = 0.0f;
+                _gradient4_tuda = true;
+            }
+            if (_gradient4_dvijenieY >= 1.0) {
+                _gradient4_tuda = false;
+
+            }
+            if (_gradient4_vverx) {
+                _gradient4_dvijenieY += MainActivity.gradient4_speedMoveValue / 5000;
+                if (_gradient4_dvijenieY >= 1.0) {
+                    _gradient4_dvijenieY = 1.0f;
+                }
+            }
+            if (!_gradient4_vverx) {
+                _gradient4_dvijenieY -= MainActivity.gradient4_speedMoveValue / 5000;
+                if (_gradient4_dvijenieY <= 0) {
+                    _gradient4_dvijenieY = 0.0f;
+                }
+            }
+
+            if (_gradient4_dvijenieX >= 1.0) {
+                _gradient4_vverx = true;
+            }
+            if (_gradient4_dvijenieX <= 0.0) {
+                _gradient4_vverx = false;
             }
         }
-
-        if (_gradient4_dvijenieX >= 1.0) {
-            _gradient4_vverx = true;
-        }
-        if (_gradient4_dvijenieX <= 0.0) {
-            _gradient4_vverx = false;
-        }
-    }
 
         if (MainActivity.gradient4_typeMove == 2) {
             _gradient4_tickTimeX++;
@@ -1034,6 +1076,19 @@ public class Render implements GLSurfaceView.Renderer {
                 if (random <= 1.0 && random > 0.75) {
                     _gradient4_vverx = true;
                 }
+            }
+        }
+        if (MainActivity.gradient4_typeMove==3 || MainActivity.gradient4_typeMove==4 ) {
+            float xCenter = MainActivity.gradient4_xCenterValue / 100;
+            float yCenter = MainActivity.gradient4_yCenterValue / 100;
+            float rCenter = MainActivity.gradient4_rCenterValue / 100;
+            _gradient4_dvijenieX = (float) (xCenter + rCenter * Math.cos(_gradient4_tickTimeY));
+            _gradient4_dvijenieY = (float) (yCenter + rCenter * Math.sin(_gradient4_tickTimeY));
+            if(MainActivity.gradient4_typeMove==3 ) {
+                _gradient4_tickTimeY += MainActivity.gradient4_speedMoveValue / 1000;
+            }
+            if(MainActivity.gradient4_typeMove==4 ){
+                _gradient4_tickTimeY -= MainActivity.gradient4_speedMoveValue / 1000;
             }
         }
 

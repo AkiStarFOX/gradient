@@ -158,7 +158,7 @@
                 android:id="@+id/typeOfMoveRG"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/speedMoveSB">
@@ -176,7 +176,75 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="случайное"/>
+
+                <RadioButton
+                    android:id="@+id/rbCircleMove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="по кругу"/>
+
+                <RadioButton
+                    android:id="@+id/rbCounterCircleMove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="против круга"/>
             </RadioGroup>
+
+            <TextView
+                android:id="@+id/txtCenterX"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="X центра окружности"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/typeOfMoveRG"/>
+            <SeekBar
+                android:id="@+id/xCircleSB"
+                android:layout_width="220dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtCenterX"/>
+
+            <TextView
+                android:id="@+id/txtCenterY"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Y центра окружности"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/xCircleSB"/>
+            <SeekBar
+                android:id="@+id/yCircleSB"
+                android:layout_width="220dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtCenterY"/>
+            <TextView
+                android:id="@+id/txtCenterR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Радиус"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/yCircleSB"/>
+            <SeekBar
+                android:id="@+id/rCircleSB"
+                android:layout_width="220dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtCenterR"/>
+
 
             <TextView
                 android:id="@+id/txtSpeedPulse"
@@ -186,7 +254,7 @@
                 android:text="Интенсивность пульсирования"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/typeOfMoveRG"/>
+                app:layout_constraintTop_toBottomOf="@+id/rCircleSB"/>
 
             <SeekBar
                 android:id="@+id/speedPulsSB"

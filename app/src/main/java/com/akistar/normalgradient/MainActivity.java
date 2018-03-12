@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     public static String gradient2_color1Value, gradient2_color2Value;
     public static String gradient3_color1Value, gradient3_color2Value;
     public static String gradient4_color1Value, gradient4_color2Value;
-    RadioButton rbGradient1, rbGradient2, rbGradient3, rbGradient4, rbClockMove, rbRandomMove, rbGausseType,rbTanType;
+    RadioButton rbGradient1, rbGradient2, rbGradient3, rbGradient4, rbClockMove, rbRandomMove, rbGausseType,rbTanType,rbAlphaType;
     Button btnOk, btnAdd, btnDel;
     public static boolean GRADIENT_2 = false;
     public static boolean GRADIENT_3 = false;
@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         rbTanType = findViewById(R.id.rbTanType);
         rbGausseType.setOnClickListener(this);
         rbTanType.setOnClickListener(this);
+        rbAlphaType=findViewById(R.id.rbAlphaType);
+        rbAlphaType.setOnClickListener(this);
 
         btnAdd = findViewById(R.id.btnAdd);
         btnDel = findViewById(R.id.btnDel);
@@ -289,13 +291,13 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
                 alphaValue = (float) i;
             }
             if(rbGradient2.isChecked()){
-                gradient2_alphaValue = (float) i;
+                gradient2_alphaValue = (float)  i;
             }
             if(rbGradient3.isChecked()){
-                gradient3_alphaValue = (float) i;
+                gradient3_alphaValue = (float)  i;
             }
             if(rbGradient4.isChecked()){
-                gradient4_alphaValue = (float) i;
+                gradient4_alphaValue = (float)  i;
             }
 
         }
@@ -375,6 +377,9 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
                 if(typeofGrad==2){
                     rbTanType.setChecked(true);
                 }
+                if(typeofGrad==3){
+                    rbAlphaType.setChecked(true);
+                }
 
 
                 break;
@@ -399,6 +404,9 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
                 if(gradient2_typeOfGrad==2){
                     rbTanType.setChecked(true);
                 }
+                if(gradient2_typeOfGrad==3){
+                    rbAlphaType.setChecked(true);
+                }
                 break;
             case R.id.rbGradient3:
                 color1.setText(gradient3_color1Value);
@@ -422,6 +430,10 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
                 if(gradient3_typeOfGrad==2){
                     rbTanType.setChecked(true);
                 }
+
+                if(gradient3_typeOfGrad==3){
+                    rbAlphaType.setChecked(true);
+                }
                 break;
             case R.id.rbGradient4:
                 color1.setText(gradient4_color1Value);
@@ -444,6 +456,10 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
                 }
                 if(gradient4_typeOfGrad==2){
                     rbTanType.setChecked(true);
+                }
+
+                if(gradient4_typeOfGrad==3){
+                    rbAlphaType.setChecked(true);
                 }
                 break;
             case R.id.btnOk:
@@ -521,14 +537,23 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
                     gradient4_typeOfGrad=2;
                 }
                 break;
-
+            case R.id.rbAlphaType:
+                if(rbGradient1.isChecked()) {
+                    typeofGrad=3;
+                }
+                if(rbGradient2.isChecked()) {
+                    gradient2_typeOfGrad=3;
+                }
+                if(rbGradient3.isChecked()) {
+                    gradient3_typeOfGrad=3;
+                }
+                if(rbGradient4.isChecked()) {
+                    gradient4_typeOfGrad=3;
+                }
 
 
 
         }
-
-
-
 
     }
 }

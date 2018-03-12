@@ -86,8 +86,8 @@ public class Render implements GLSurfaceView.Renderer {
     private int randomColor1;
     private int randomColor2;
     private int randomColor3;
-    private float _disp1Default = 0.25f;
-    private float _disp2Default = 0.25f;
+    private float _disp1Default = 0.1f;
+    private float _disp2Default = 0.1f;
 
     float dvijenieX = 0.0f;
     float dvijenieY = 0.0f;
@@ -140,8 +140,8 @@ public class Render implements GLSurfaceView.Renderer {
     private int _gradient4_u1;
     private int _gradient4_u2;
 
-    private float _gradient2_disp1Default = 0.25f;
-    private float _gradient2_disp2Default = 0.25f;
+    private float _gradient2_disp1Default = 0.01f;
+    private float _gradient2_disp2Default = 0.01f;
 
     private float _gradient3_disp1Default = 0.25f;
     private float _gradient3_disp2Default = 0.25f;

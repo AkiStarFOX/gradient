@@ -100,8 +100,8 @@ uniform float u_gradient4_Type;
 varying highp vec2 v_TexCoord;
 
 float formula(float u_Disp1,float u_Disp2,float u_Pulse,float u_u1, float u_u2) {
-    float  x = v_TexCoord.x/3.0;
-    float y = v_TexCoord.y/3.0;
+    float  x = v_TexCoord.x;
+    float y = v_TexCoord.y;
     float u_Disp12= 1.0;
     float p = 0.2;
     float x1 = (pow((x-u_u1),2.0))/pow(u_Disp1,2.0);
@@ -109,8 +109,8 @@ float formula(float u_Disp1,float u_Disp2,float u_Pulse,float u_u1, float u_u2) 
     float xy = p * ((2.0*(x-u_u1)*(y-u_u2))/(u_Disp1*u_Disp2));
     float stepenE = (-1.0*(1.0/(2.0*(1.0-pow(p,2.0)))))*(x1-xy+y1);
     float e = 2.71828;
-    float result = (1.0 /(2.0 * 3.14 * u_Disp1 * u_Disp2 *sqrt((1.0-pow(p,2.0))))) * pow(e,stepenE);
-    float result2 = result/(1.0/(2.0*3.14*u_Disp1*u_Disp2*sqrt(1.0-pow(p,2.0))));
+    float result = (1.0 /(2.0 * 3.14 * u_Disp1 * u_Disp2 )) * pow(e,stepenE);
+    float result2 = result/(1.0/(2.0*3.14*u_Disp1*u_Disp2));
     return result2;
 }
 

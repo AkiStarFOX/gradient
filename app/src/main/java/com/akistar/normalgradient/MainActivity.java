@@ -4,6 +4,8 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ConfigurationInfo;
 import android.opengl.GLSurfaceView;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,10 +18,10 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity implements  View.OnClickListener {
     GLSurfaceView glView;
     SeekBar disp1SB, disp2SB, speedMoveSB, speedPulsSB, speedColorSB, alphaSB,xCenterSB,yCenterSB,rCenterSB;
-    public static float disp1Value, disp2Value, speedMoveValue, speedPulsValue, speedColorValue,alphaValue,typeMove=1,typeofGrad=1,xCenterValue,yCenterValue,rCenterValue;
+    public static float disp1Value, disp2Value, speedMoveValue, speedPulsValue, speedColorValue,alphaValue,typeMove=1,typeofGrad=1,xCenterValue=0.5f,yCenterValue=0.5f,rCenterValue=0.1f;
     public static float gradient2_disp1Value, gradient2_disp2Value, gradient2_speedMoveValue, gradient2_speedPulsValue,
             gradient2_speedColorValue,gradient2_alphaValue,gradient2_typeMove=1,gradient2_typeOfGrad=1,
-            gradient2_xCenterValue, gradient2_yCenterValue, gradient2_rCenterValue;
+            gradient2_xCenterValue=0.5f, gradient2_yCenterValue=0.5f, gradient2_rCenterValue=0.1f;
 
     public static float gradient3_disp1Value, gradient3_disp2Value, gradient3_speedMoveValue, gradient3_speedPulsValue,
             gradient3_speedColorValue,gradient3_alphaValue,gradient3_typeMove=1,gradient3_typeOfGrad=1,
@@ -40,6 +42,10 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     public static boolean GRADIENT_3 = false;
     public static boolean GRADIENT_4 = false;
     public static int kolichestvoGradienotv = 1;
+    private BottomSheetBehavior mBottomSheetBehavior;
+    boolean isClick=false;
+
+
 
 
 
@@ -113,6 +119,27 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         txtSpeedPulse = findViewById(R.id.txtSpeedPulse);
         txtSpeedColor = findViewById(R.id.txtSpeedColor);
 
+        View bottomSheet = findViewById(R.id.bottom_sheet);
+        mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        Button button123 = findViewById(R.id.btnSheetMenu);
+        button123.setOnClickListener(this);
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_DRAGGING) {
+                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+
+
+
 
 
 
@@ -120,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         color2Value = "#ff7300";
         gradient2_color1Value = "#d41919";
         gradient2_color2Value = "#1929d4";
-        gradient3_color1Value = "#a2a4ba";
+        gradient3_color1Value = "#18de0d";
         gradient3_color2Value = "#24d624";
         gradient4_color1Value = "#f5f507";
         gradient4_color2Value = "#07f5f5";
@@ -624,6 +651,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
                     gradient4_color1Value = color1.getText().toString();
                     gradient4_color2Value = color2.getText().toString();
                 }
+
                 break;
             case R.id.rbClockMove:
                 if(rbGradient1.isChecked()) {
@@ -726,6 +754,17 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
                     gradient4_typeOfGrad=3;
                 }
                 break;
+            case R.id.btnSheetMenu:
+                if(isClick==false)
+                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+                else
+                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+                isClick=!isClick;
+
+                break;
+
 
 
 

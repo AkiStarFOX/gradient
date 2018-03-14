@@ -49,6 +49,7 @@ public class Render implements GLSurfaceView.Renderer {
     private int _programId;
     public static Context _context;
     float overviewScale;
+    float overviewScaleY;
     float translationX;
     float translationY;
     public static int _imgW;
@@ -151,14 +152,22 @@ public class Render implements GLSurfaceView.Renderer {
     private float _gradient4_disp1Default = 0.25f;
     private float _gradient4_disp2Default = 0.25f;
 
-    float _gradient2_dvijenieX = 1.0f;
-    float _gradient2_dvijenieY = 0.0f;
+    float _gradient2_dvijenieX;
+    float _gradient2_dvijenieY;
 
-    float _gradient3_dvijenieX = 1.0f;
-    float _gradient3_dvijenieY = 1.0f;
+    float _gradient3_dvijenieX;
+    float _gradient3_dvijenieY;
 
-    float _gradient4_dvijenieX = 0.0f;
-    float _gradient4_dvijenieY = 1.0f;
+    float _gradient4_dvijenieX ;
+    float _gradient4_dvijenieY ;
+    float _gradient2_dvijenieX_default = 1.0f;
+    float _gradient2_dvijenieY_default = 0.1f;
+
+    float _gradient3_dvijenieX_default = 1.0f;
+    float _gradient3_dvijenieY_default = 1.0f;
+
+    float _gradient4_dvijenieX_default = 0.1f;
+    float _gradient4_dvijenieY_default = 1.0f;
 
     private int _gradient2_uFirstColorRed;
     private int _gradient2_uFirstColorGreen;
@@ -286,7 +295,7 @@ public class Render implements GLSurfaceView.Renderer {
 
     private float _tickTimeX;
     private float _tickTimeY;
-    private float _gradient2_tickTimeY;
+    private float _gradient2_tickTimeY=0.1f;
     private float _gradient3_tickTimeY;
     private float _gradient4_tickTimeY;
     private float _gradient2_tickTimeX;
@@ -304,6 +313,9 @@ public class Render implements GLSurfaceView.Renderer {
 
     private int _gradient4_uGradientType;
     private float _gradient4_gradientType;
+    float xCenter=0.0f;
+    float yCenter=0.0f;
+    float rCenter=0.1f;
 
 
     @Override
@@ -406,20 +418,8 @@ public class Render implements GLSurfaceView.Renderer {
 
 
         // инициализируем буферы вершин, индексов и текстурных координат
-        float[] verts = arrayFromRectF(new RectF(0, 0, _imgW, _imgH));
 
-        _vertices = ByteBuffer.allocateDirect(verts.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
-        _vertices.put(verts);
-        _vertices.position(0);
-
-        _indices = ByteBuffer.allocateDirect(verts.length * 2).order(ByteOrder.nativeOrder()).asShortBuffer();
-        _indices.put(inds);
-        _indices.position(0);
-
-        _texCoords = ByteBuffer.allocateDirect(texCoords.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
-        _texCoords.put(texCoords);
-        _texCoords.position(0);
-        _textureId = TextureUtils.loadTexture(image, true);
+//        _textureId = TextureUtils.loadTexture(image, true);
 
 
         glEnable(GL_ALPHA_TEST);
@@ -440,21 +440,44 @@ public class Render implements GLSurfaceView.Renderer {
 
         // вычисляем насколько нужно уменьшить и сдвинуть изображение, чтобы оно влезло в
         // glSurfaceView и было по центру
-        overviewScale = Math.min((float) width / _imgW, (float) height / _imgH);
+        overviewScale =(float) width / (float) height ;
+        overviewScaleY = (float)(height/_imgH);
+
         translationX = width / 2.0f - (_imgW / 2.0f) * overviewScale;
         translationY = height / 2.0f - (_imgH / 2.0f) * overviewScale;
 
 
         // задаем матрицу модели
         Matrix.setIdentityM(_modelM, 0);
-        Matrix.translateM(_modelM, 0, translationX, translationY, 0);
-        Matrix.scaleM(_modelM, 0, overviewScale, overviewScale, 1.0f);
+//        Matrix.translateM(_modelM, 0, translationX, translationY, 0);
+//        Matrix.scaleM(_modelM, 0,overviewScale, overviewScale, 1.0f);
 
     }
 
     private void shaderParams() {
+        float[] verts = arrayFromRectF(new RectF(0, 0, _glViewWidth, _glViewHeight));
+
+        _vertices = ByteBuffer.allocateDirect(verts.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
+        _vertices.put(verts);
+        _vertices.position(0);
+
+        _indices = ByteBuffer.allocateDirect(verts.length * 2).order(ByteOrder.nativeOrder()).asShortBuffer();
+        _indices.put(inds);
+        _indices.position(0);
+
+        _texCoords = ByteBuffer.allocateDirect(texCoords.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
+        _texCoords.put(texCoords);
+        _texCoords.position(0);
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, _textureId);
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
+        GLES20.glTexParameteri(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
+        GLES20.glTexParameteri(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
+        GLES20.glTexParameteri(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);
+        GLES20.glTexParameteri(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);
+        GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, _glViewWidth, _glViewHeight, 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, null);
+
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
 
 
         GLES20.glUniform1i(_uTextureLocation, 0);
@@ -497,18 +520,18 @@ public class Render implements GLSurfaceView.Renderer {
 
         GLES20.glUniform1f(_gradient2_disp1, _disp1Default + MainActivity.gradient2_disp1Value / 100f + _gradient2_pulse);
         GLES20.glUniform1f(_gradient2_disp2, _disp2Default + MainActivity.gradient2_disp2Value / 100f + _gradient2_pulse);
-        GLES20.glUniform1f(_gradient2_u1, _gradient2_dvijenieX);
-        GLES20.glUniform1f(_gradient2_u2, _gradient2_dvijenieY);
+        GLES20.glUniform1f(_gradient2_u1,_gradient2_dvijenieX_default- _gradient2_dvijenieX);
+        GLES20.glUniform1f(_gradient2_u2, _gradient2_dvijenieY_default+_gradient2_dvijenieY);
 
         GLES20.glUniform1f(_gradient3_disp1, _disp1Default + MainActivity.gradient3_disp1Value / 100f + _gradient3_pulse);
         GLES20.glUniform1f(_gradient3_disp2, _disp2Default + MainActivity.gradient3_disp2Value / 100f + _gradient3_pulse);
-        GLES20.glUniform1f(_gradient3_u1, _gradient3_dvijenieX);
-        GLES20.glUniform1f(_gradient3_u2, _gradient3_dvijenieY);
+        GLES20.glUniform1f(_gradient3_u1, _gradient3_dvijenieX_default-_gradient3_dvijenieX);
+        GLES20.glUniform1f(_gradient3_u2, _gradient3_dvijenieY_default-_gradient3_dvijenieY);
 
         GLES20.glUniform1f(_gradient4_disp1, _disp1Default + MainActivity.gradient4_disp1Value / 100f + _gradient4_pulse);
         GLES20.glUniform1f(_gradient4_disp2, _disp2Default + MainActivity.gradient4_disp2Value / 100f + _gradient4_pulse);
-        GLES20.glUniform1f(_gradient4_u1, _gradient4_dvijenieX);
-        GLES20.glUniform1f(_gradient4_u2, _gradient4_dvijenieY);
+        GLES20.glUniform1f(_gradient4_u1, _gradient4_dvijenieX_default+_gradient4_dvijenieX);
+        GLES20.glUniform1f(_gradient4_u2, _gradient4_dvijenieY_default-_gradient4_dvijenieY);
 
         GLES20.glUniform1f(_gradient2_uFirstColorRed, _gradient2_firstColorRed / 255f);
         GLES20.glUniform1f(_gradient2_uFirstColorGreen, _gradient2_firstColorGreen / 255f);
@@ -580,7 +603,7 @@ public class Render implements GLSurfaceView.Renderer {
         grad2_randomPulse();
         grad3_randomPulse();
         grad4_randomPulse();
-        formula();
+
 
     }
 
@@ -766,16 +789,29 @@ public class Render implements GLSurfaceView.Renderer {
                 vverx = false;
             }
         }
-        if (MainActivity.typeMove==3 || MainActivity.typeMove==4){
-            float xCenter = MainActivity.xCenterValue/100;
-            float yCenter = MainActivity.yCenterValue/100;
-            float rCenter = MainActivity.rCenterValue/100;
-            dvijenieX=(float) (xCenter+rCenter*Math.cos(_tickTimeY));
-            dvijenieY=(float) (yCenter+rCenter*Math.sin(_tickTimeY));
-            if(MainActivity.typeMove==3 ) {
+        if (MainActivity.typeMove==3 || MainActivity.typeMove==4) {
+            _tickTimeX++;
+
+            if (_tickTimeX == 40) {
+                xCenter = (float) Math.random();
+                yCenter = (float) Math.random();
+
+
+                _tickTimeX=0;
+            }
+            rCenter = MainActivity.rCenterValue / 100;
+            if(xCenter>rCenter){
+                xCenter=rCenter;
+            }
+            if(yCenter>rCenter){
+                yCenter=rCenter;
+            }
+            dvijenieX = (float) (xCenter + rCenter * Math.cos(_tickTimeY));
+            dvijenieY = (float) (yCenter + rCenter * Math.sin(_tickTimeY));
+            if (MainActivity.typeMove == 3) {
                 _tickTimeY += MainActivity.speedMoveValue / 1000;
             }
-            if(MainActivity.typeMove==4 ){
+            if (MainActivity.typeMove == 4) {
                 _tickTimeY -= MainActivity.speedMoveValue / 1000;
             }
         }
@@ -1339,24 +1375,24 @@ public class Render implements GLSurfaceView.Renderer {
             _gradient4_pulseGo = true;
         }
     }
-    public void formula(){
-        float  x = 1.0f/image.getWidth();
-        float y = 1.0f/image.getHeight();
-        float u_Disp1=1.0f;
-        float u_Disp2=1.0f;
-        float u_u1=1.0f/image.getWidth();
-        float u_u2=1.0f/image.getHeight();
-        float u_Disp12= 1.0f;
-        float p = 0.5f;
-        float x1 = (float)((pow((x-u_u1),2.0))/pow(u_Disp1,2.0));
-        float y1 = (float)((pow((y-u_u2),2.0))/pow(u_Disp2,2.0));
-        float xy = (float)(p * ((2.0*(x-u_u1)*(y-u_u2))/(u_Disp1*u_Disp2)));
-        float stepenE = (float)(-1.0*(1.0/(2.0*(1.0-pow(p,2.0)))))*(x1-xy+y1);
-        float e = 2.71828f;
-        float result = (float)((1.0 /(2.0 * 3.14 * u_Disp1 * u_Disp2 *sqrt((1.0-pow(p,2.0))))) * pow(e,stepenE));
-        float result2 = (float)(result/(1.0/(2.0*3.14*u_Disp1*u_Disp2*sqrt(1.0-pow(p,2.0)))));
-        Log.d("TAG","result = " + result );
-        Log.d("TAG","resul2 = " + result2 );
-
-    }
+//    public void formula(){
+//        float  x = 1.0f/image.getWidth();
+//        float y = 1.0f/image.getHeight();
+//        float u_Disp1=1.0f;
+//        float u_Disp2=1.0f;
+//        float u_u1=1.0f/image.getWidth();
+//        float u_u2=1.0f/image.getHeight();
+//        float u_Disp12= 1.0f;
+//        float p = 0.5f;
+//        float x1 = (float)((pow((x-u_u1),2.0))/pow(u_Disp1,2.0));
+//        float y1 = (float)((pow((y-u_u2),2.0))/pow(u_Disp2,2.0));
+//        float xy = (float)(p * ((2.0*(x-u_u1)*(y-u_u2))/(u_Disp1*u_Disp2)));
+//        float stepenE = (float)(-1.0*(1.0/(2.0*(1.0-pow(p,2.0)))))*(x1-xy+y1);
+//        float e = 2.71828f;
+//        float result = (float)((1.0 /(2.0 * 3.14 * u_Disp1 * u_Disp2 *sqrt((1.0-pow(p,2.0))))) * pow(e,stepenE));
+//        float result2 = (float)(result/(1.0/(2.0*3.14*u_Disp1*u_Disp2*sqrt(1.0-pow(p,2.0)))));
+//        Log.d("TAG","result = " + result );
+//        Log.d("TAG","resul2 = " + result2 );
+//
+//    }
 }

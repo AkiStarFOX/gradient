@@ -36,6 +36,7 @@ public class TextureUtils {
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
 
         GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, bitmap, 0);
+//        GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA,1000, 2000, 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, null);
 
         if (recycle) {
             bitmap.recycle();

@@ -25,6 +25,8 @@ import static android.opengl.GLES20.GL_BLEND;
 import static android.opengl.GLES20.GL_SRC_ALPHA;
 import static android.opengl.GLES20.glBlendFunc;
 import static android.opengl.GLES20.glEnable;
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
 
 /**
  * Created by AkiStar on 05.03.2018.
@@ -578,7 +580,7 @@ public class Render implements GLSurfaceView.Renderer {
         grad2_randomPulse();
         grad3_randomPulse();
         grad4_randomPulse();
-
+        formula();
 
     }
 
@@ -1336,5 +1338,25 @@ public class Render implements GLSurfaceView.Renderer {
         if (_gradient4_pulse <= 0.0f) {
             _gradient4_pulseGo = true;
         }
+    }
+    public void formula(){
+        float  x = 1.0f/image.getWidth();
+        float y = 1.0f/image.getHeight();
+        float u_Disp1=1.0f;
+        float u_Disp2=1.0f;
+        float u_u1=1.0f/image.getWidth();
+        float u_u2=1.0f/image.getHeight();
+        float u_Disp12= 1.0f;
+        float p = 0.5f;
+        float x1 = (float)((pow((x-u_u1),2.0))/pow(u_Disp1,2.0));
+        float y1 = (float)((pow((y-u_u2),2.0))/pow(u_Disp2,2.0));
+        float xy = (float)(p * ((2.0*(x-u_u1)*(y-u_u2))/(u_Disp1*u_Disp2)));
+        float stepenE = (float)(-1.0*(1.0/(2.0*(1.0-pow(p,2.0)))))*(x1-xy+y1);
+        float e = 2.71828f;
+        float result = (float)((1.0 /(2.0 * 3.14 * u_Disp1 * u_Disp2 *sqrt((1.0-pow(p,2.0))))) * pow(e,stepenE));
+        float result2 = (float)(result/(1.0/(2.0*3.14*u_Disp1*u_Disp2*sqrt(1.0-pow(p,2.0)))));
+        Log.d("TAG","result = " + result );
+        Log.d("TAG","resul2 = " + result2 );
+
     }
 }

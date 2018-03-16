@@ -25,7 +25,9 @@ import static android.opengl.GLES20.GL_BLEND;
 import static android.opengl.GLES20.GL_SRC_ALPHA;
 import static android.opengl.GLES20.glBlendFunc;
 import static android.opengl.GLES20.glEnable;
+import static java.lang.Math.PI;
 import static java.lang.Math.pow;
+import static java.lang.Math.random;
 import static java.lang.Math.sqrt;
 
 /**
@@ -66,6 +68,7 @@ public class Render implements GLSurfaceView.Renderer {
 
     private float[] _screenProjM = new float[16];
     private float[] _modelM = new float[16];
+    private float _tickTimeXtemp=0;
 
 
     public Render(Context context) {
@@ -92,8 +95,8 @@ public class Render implements GLSurfaceView.Renderer {
     private float _disp1Default = 0.1f;
     private float _disp2Default = 0.1f;
 
-    float dvijenieX = 0.0f;
-    float dvijenieY = 0.0f;
+    float dvijenieX = 0.5f;
+    float dvijenieY = 0.5f;
     boolean tuda = true;
     boolean vverx = true;
     public float randomColorValue1;
@@ -294,7 +297,7 @@ public class Render implements GLSurfaceView.Renderer {
     private int _gradient4_uAlpha;
 
     private float _tickTimeX;
-    private float _tickTimeY;
+    private float _tickTimeY=240;
     private float _gradient2_tickTimeY=0.1f;
     private float _gradient3_tickTimeY;
     private float _gradient4_tickTimeY;
@@ -313,9 +316,13 @@ public class Render implements GLSurfaceView.Renderer {
 
     private int _gradient4_uGradientType;
     private float _gradient4_gradientType;
-    float xCenter=0.0f;
-    float yCenter=0.0f;
-    float rCenter=0.1f;
+    float xCenter=0.5f;
+    float yCenter=0.5f;
+    float rCenter=0.2f;
+    float dvijenieXprew=0.0f;
+    float dvijenieYprew=0.0f;
+    float angle=0;
+    int kolichestvoKrugov=0;
 
 
     @Override
@@ -790,33 +797,90 @@ public class Render implements GLSurfaceView.Renderer {
             }
         }
         if (MainActivity.typeMove==3 || MainActivity.typeMove==4) {
-            _tickTimeX++;
+//            _tickTimeX++;
+//
+//            dvijenieX = xCenter + rCenter*(float)Math.cos(Math.toRadians(angle));
+//            dvijenieY = yCenter + rCenter*(float)Math.sin(Math.toRadians(angle));
+//            if(tuda){
+//                angle+=1f;
+//            }
+//            if(!tuda){
+//                angle-=1f;
+//            }
+//            if(angle%360==0){
+//                kolichestvoKrugov++;
+//            }
+//
+//
+//
+//            if(_tickTimeX==90){
+//
+//                _tickTimeY = Math.abs((kolichestvoKrugov*360)-angle);
+//
+//                angle=0;
+//
+//                xCenter=(float)(dvijenieX+rCenter);
+//                yCenter=(float)(dvijenieY+rCenter);
+//
+//                if(_tickTimeY>180){
+//                    angle=Math.abs(360+_tickTimeY);
+//                }
+//                if(_tickTimeY<180){
+//                    angle=Math.abs(_tickTimeY+180-);
+//                }
+//
+//                _tickTimeX=0;
+//
+//
+//            }
+//            Log.d("TAG","angle = " + angle);
+//            Log.d("TAG","ticktamY = " + _tickTimeY);
 
-            if (_tickTimeX == 40) {
-                xCenter = (float) Math.random();
-                yCenter = (float) Math.random();
 
 
-                _tickTimeX=0;
+
+            rCenter=MainActivity.rCenterValue/100;
+            
+
+            dvijenieX = dvijenieX + (float) Math.random()/10* (float) Math.sin(_tickTimeX)* rCenter * lofl1;
+            dvijenieY = dvijenieY + (float) Math.random()/10* (float) Math.cos(_tickTimeX)* rCenter * lofl2;
+
+            //dvijenieX = dvijenieX + (float) (1.0 - Math.sin(( rCenter))) * lofl1 * rCenter * 0.01f;
+            //dvijenieY = dvijenieY + (float) (1.0 - Math.cos(( rCenter))) * lofl2 * rCenter * 0.01f;
+            _tickTimeX += 0.03f;
+
+
+            if (Math.sin(_tickTimeX) < 0.05) {
+                if (lol) {
+                    lofl1 = lofl1 * -1.f;
+                    lol = false;
+                }
+            } else {
+                lol = true;
             }
-            rCenter = MainActivity.rCenterValue / 100;
-            if(xCenter>rCenter){
-                xCenter=rCenter;
+            if (Math.cos(_tickTimeX) < 0.05) {
+                if (lol2) {
+                    lofl2 = lofl2 * -1.f;
+                    lol2 = false;
+                }
+            } else {
+                lol2 = true;
             }
-            if(yCenter>rCenter){
-                yCenter=rCenter;
+
+            if (_tickTimeX > _tickTimeXtemp) {
+                _tickTimeXtemp += 0.5*rCenter*PI;
             }
-            dvijenieX = (float) (xCenter + rCenter * Math.cos(_tickTimeY));
-            dvijenieY = (float) (yCenter + rCenter * Math.sin(_tickTimeY));
-            if (MainActivity.typeMove == 3) {
-                _tickTimeY += MainActivity.speedMoveValue / 1000;
-            }
-            if (MainActivity.typeMove == 4) {
-                _tickTimeY -= MainActivity.speedMoveValue / 1000;
-            }
+
         }
 
     }
+
+    public float lofl1 = 1.0f;
+    public float lofl2 = 1.0f;
+    public float lofl3 = 1.0f;
+    public float lofl4 = 1.0f;
+    public boolean lol = true;
+    public boolean lol2 = true;
 
     public void grad2_randomTrans() {
         if (MainActivity.gradient2_typeMove == 2) {

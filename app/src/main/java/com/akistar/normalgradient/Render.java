@@ -26,9 +26,6 @@ import static android.opengl.GLES20.GL_SRC_ALPHA;
 import static android.opengl.GLES20.glBlendFunc;
 import static android.opengl.GLES20.glEnable;
 import static java.lang.Math.PI;
-import static java.lang.Math.pow;
-import static java.lang.Math.random;
-import static java.lang.Math.sqrt;
 
 /**
  * Created by AkiStar on 05.03.2018.
@@ -76,14 +73,11 @@ public class Render implements GLSurfaceView.Renderer {
     }
 
     public static Bitmap image;
-
-    static void setImage(Bitmap bitmap) {
-        image = bitmap;
-    }
+    
 
     private int _aTexCoordLocation;
     private int _uTextureLocation;
-    private int _textureId;
+   
 
     private int _disp1;
     private int _disp2;
@@ -95,8 +89,8 @@ public class Render implements GLSurfaceView.Renderer {
     private float _disp1Default = 0.1f;
     private float _disp2Default = 0.1f;
 
-    float dvijenieX = 0.5f;
-    float dvijenieY = 0.5f;
+    float dvijenieX = 0.2f;
+    float dvijenieY = 0.2f;
     boolean tuda = true;
     boolean vverx = true;
     public float randomColorValue1;
@@ -145,32 +139,17 @@ public class Render implements GLSurfaceView.Renderer {
     private int _gradient4_disp2;
     private int _gradient4_u1;
     private int _gradient4_u2;
+    
 
-    private float _gradient2_disp1Default = 0.01f;
-    private float _gradient2_disp2Default = 0.01f;
+    float _gradient2_dvijenieX=0.8f;
+    float _gradient2_dvijenieY=0.2f;
 
-    private float _gradient3_disp1Default = 0.25f;
-    private float _gradient3_disp2Default = 0.25f;
+    float _gradient3_dvijenieX=0.7f;
+    float _gradient3_dvijenieY=0.8f;
 
-    private float _gradient4_disp1Default = 0.25f;
-    private float _gradient4_disp2Default = 0.25f;
+    float _gradient4_dvijenieX=0.2f ;
+    float _gradient4_dvijenieY=0.8f ;
 
-    float _gradient2_dvijenieX;
-    float _gradient2_dvijenieY;
-
-    float _gradient3_dvijenieX;
-    float _gradient3_dvijenieY;
-
-    float _gradient4_dvijenieX ;
-    float _gradient4_dvijenieY ;
-    float _gradient2_dvijenieX_default = 1.0f;
-    float _gradient2_dvijenieY_default = 0.1f;
-
-    float _gradient3_dvijenieX_default = 1.0f;
-    float _gradient3_dvijenieY_default = 1.0f;
-
-    float _gradient4_dvijenieX_default = 0.1f;
-    float _gradient4_dvijenieY_default = 1.0f;
 
     private int _gradient2_uFirstColorRed;
     private int _gradient2_uFirstColorGreen;
@@ -239,7 +218,7 @@ public class Render implements GLSurfaceView.Renderer {
 
 
     private int u_kolichestvoGrad;
-    private int _kolichestvoGrad;
+   
 
 
     private int _gradient2_randomColor1;
@@ -272,15 +251,6 @@ public class Render implements GLSurfaceView.Renderer {
     boolean _gradient4_changeColor2 = true;
     boolean _gradient4_changeColor3 = false;
 
-    boolean _gradient2_tuda = true;
-    boolean _gradient2_vverx = false;
-
-    boolean _gradient3_tuda = true;
-    boolean _gradient3_vverx = false;
-
-    boolean _gradient4_tuda = true;
-    boolean _gradient4_vverx = false;
-
 
     private float _gradient2_pulse;
     boolean _gradient2_pulseGo = true;
@@ -297,32 +267,41 @@ public class Render implements GLSurfaceView.Renderer {
     private int _gradient4_uAlpha;
 
     private float _tickTimeX;
-    private float _tickTimeY=240;
-    private float _gradient2_tickTimeY=0.1f;
-    private float _gradient3_tickTimeY;
-    private float _gradient4_tickTimeY;
     private float _gradient2_tickTimeX;
     private float _gradient3_tickTimeX;
     private float _gradient4_tickTimeX;
 
     private int _uGradientType;
-    private float _gradientType;
 
     private int _gradient2_uGradientType;
-    private float _gradient2_gradientType;
 
     private int _gradient3_uGradientType;
-    private float _gradient3_gradientType;
 
     private int _gradient4_uGradientType;
-    private float _gradient4_gradientType;
-    float xCenter=0.5f;
-    float yCenter=0.5f;
     float rCenter=0.2f;
-    float dvijenieXprew=0.0f;
-    float dvijenieYprew=0.0f;
-    float angle=0;
-    int kolichestvoKrugov=0;
+    float _gradient2_rCenter=0.2f;
+    float _gradient3_rCenter=0.2f;
+    float _gradient4_rCenter=0.2f;
+    private float _directionX = 1.0f;
+    private float _directionY = 1.0f;
+    private boolean _randomMoveX = true;
+    private boolean _randomMoveY = true;
+
+    private float _gradient2_directionX = 1.0f;
+    private float _gradient2_directionY = 1.0f;
+    private boolean _gradient2_randomMoveX = true;
+    private boolean _gradient2_randomMoveY = true;
+
+    private float _gradient3_directionX = 1.0f;
+    private float _gradient3_directionY = 1.0f;
+    private boolean _gradient3_randomMoveX = true;
+    private boolean _gradient3_randomMoveY = true;
+
+    private float _gradient4_directionX = 1.0f;
+    private float _gradient4_directionY = 1.0f;
+    private boolean _gradient4_randomMoveX = true;
+    private boolean _gradient4_randomMoveY = true;
+
 
 
     @Override
@@ -527,18 +506,18 @@ public class Render implements GLSurfaceView.Renderer {
 
         GLES20.glUniform1f(_gradient2_disp1, _disp1Default + MainActivity.gradient2_disp1Value / 100f + _gradient2_pulse);
         GLES20.glUniform1f(_gradient2_disp2, _disp2Default + MainActivity.gradient2_disp2Value / 100f + _gradient2_pulse);
-        GLES20.glUniform1f(_gradient2_u1,_gradient2_dvijenieX_default- _gradient2_dvijenieX);
-        GLES20.glUniform1f(_gradient2_u2, _gradient2_dvijenieY_default+_gradient2_dvijenieY);
+        GLES20.glUniform1f(_gradient2_u1, _gradient2_dvijenieX);
+        GLES20.glUniform1f(_gradient2_u2, _gradient2_dvijenieY);
 
         GLES20.glUniform1f(_gradient3_disp1, _disp1Default + MainActivity.gradient3_disp1Value / 100f + _gradient3_pulse);
         GLES20.glUniform1f(_gradient3_disp2, _disp2Default + MainActivity.gradient3_disp2Value / 100f + _gradient3_pulse);
-        GLES20.glUniform1f(_gradient3_u1, _gradient3_dvijenieX_default-_gradient3_dvijenieX);
-        GLES20.glUniform1f(_gradient3_u2, _gradient3_dvijenieY_default-_gradient3_dvijenieY);
+        GLES20.glUniform1f(_gradient3_u1, _gradient3_dvijenieX);
+        GLES20.glUniform1f(_gradient3_u2, _gradient3_dvijenieY);
 
         GLES20.glUniform1f(_gradient4_disp1, _disp1Default + MainActivity.gradient4_disp1Value / 100f + _gradient4_pulse);
         GLES20.glUniform1f(_gradient4_disp2, _disp2Default + MainActivity.gradient4_disp2Value / 100f + _gradient4_pulse);
-        GLES20.glUniform1f(_gradient4_u1, _gradient4_dvijenieX_default+_gradient4_dvijenieX);
-        GLES20.glUniform1f(_gradient4_u2, _gradient4_dvijenieY_default-_gradient4_dvijenieY);
+        GLES20.glUniform1f(_gradient4_u1, _gradient4_dvijenieX);
+        GLES20.glUniform1f(_gradient4_u2, _gradient4_dvijenieY);
 
         GLES20.glUniform1f(_gradient2_uFirstColorRed, _gradient2_firstColorRed / 255f);
         GLES20.glUniform1f(_gradient2_uFirstColorGreen, _gradient2_firstColorGreen / 255f);
@@ -705,493 +684,205 @@ public class Render implements GLSurfaceView.Renderer {
 
 
     public void randomTrans() {
-        if (MainActivity.typeMove == 2) {
-            _tickTimeX++;
-
-            if (tuda) {
-                dvijenieX += MainActivity.speedMoveValue / 5000;
-            }
-            if (!tuda) {
-                dvijenieX -= MainActivity.speedMoveValue / 5000;
-            }
-            if (vverx) {
-                dvijenieY += MainActivity.speedMoveValue / 5000;
-            }
-            if (!vverx) {
-                dvijenieY -= MainActivity.speedMoveValue / 5000;
-            }
-            if (dvijenieX <= 0.0) {
-                dvijenieX = 0f;
-            }
-            if (dvijenieX >= 1.0f) {
-                dvijenieX = 1.0f;
-            }
-
-            if (dvijenieY <= 0.0) {
-                dvijenieY = 0f;
-            }
-            if (dvijenieY >= 1.0f) {
-                dvijenieY = 1.0f;
-            }
+            rCenter=MainActivity.rCenterValue/5000;
+            dvijenieX = (dvijenieX +  (float) Math.sin(_tickTimeX)* rCenter * _directionX);
+            dvijenieY = (dvijenieY +  (float) Math.cos(_tickTimeX)* rCenter * _directionY);
 
 
-            if (_tickTimeX == 30.0) {
-                _tickTimeX = 0.0f;
-                double random = Math.random();
-                if (random <= 0.25) {
-                    tuda = false;
-                }
-                if (random <= 0.5 && random > 0.25) {
-                    vverx = false;
-                }
-                if (random <= 0.75 && random > 0.5) {
-                    tuda = true;
-                }
-                if (random <= 1.0 && random > 0.75) {
-                    vverx = true;
-                }
-            }
-        }
-
-
-        if (MainActivity.typeMove == 1) {
-
-//
-            if (tuda) {
-                dvijenieX += MainActivity.speedMoveValue / 5000;
-                if (dvijenieX >= 1.0) {
-                    dvijenieX = 1.0f;
-                }
-            }
-            if (!tuda) {
-                dvijenieX -= MainActivity.speedMoveValue / 5000;
-                if (dvijenieX <= 0) {
-                    dvijenieX = 0.0f;
-                }
-            }
-            if (dvijenieY <= 0) {
-                tuda = true;
-            }
-            if (dvijenieY >= 1.0) {
-                tuda = false;
-
-            }
-            if (vverx) {
-                dvijenieY += MainActivity.speedMoveValue / 5000;
-                if (dvijenieY >= 1.0) {
-                    dvijenieY = 1.0f;
-                }
-            }
-            if (!vverx) {
-                dvijenieY -= MainActivity.speedMoveValue / 5000;
-                if (dvijenieY <= 0) {
-                    dvijenieY = 0.0f;
-                }
-            }
-
-            if (dvijenieX >= 1.0) {
-                vverx = true;
-            }
-            if (dvijenieX <= 0.0) {
-                vverx = false;
-            }
-        }
-        if (MainActivity.typeMove==3 || MainActivity.typeMove==4) {
-//            _tickTimeX++;
-//
-//            dvijenieX = xCenter + rCenter*(float)Math.cos(Math.toRadians(angle));
-//            dvijenieY = yCenter + rCenter*(float)Math.sin(Math.toRadians(angle));
-//            if(tuda){
-//                angle+=1f;
-//            }
-//            if(!tuda){
-//                angle-=1f;
-//            }
-//            if(angle%360==0){
-//                kolichestvoKrugov++;
-//            }
-//
-//
-//
-//            if(_tickTimeX==90){
-//
-//                _tickTimeY = Math.abs((kolichestvoKrugov*360)-angle);
-//
-//                angle=0;
-//
-//                xCenter=(float)(dvijenieX+rCenter);
-//                yCenter=(float)(dvijenieY+rCenter);
-//
-//                if(_tickTimeY>180){
-//                    angle=Math.abs(360+_tickTimeY);
-//                }
-//                if(_tickTimeY<180){
-//                    angle=Math.abs(_tickTimeY+180-);
-//                }
-//
-//                _tickTimeX=0;
-//
-//
-//            }
-//            Log.d("TAG","angle = " + angle);
-//            Log.d("TAG","ticktamY = " + _tickTimeY);
-
-
-
-
-            rCenter=MainActivity.rCenterValue/100;
-            
-
-            dvijenieX = dvijenieX + (float) Math.random()/10* (float) Math.sin(_tickTimeX)* rCenter * lofl1;
-            dvijenieY = dvijenieY + (float) Math.random()/10* (float) Math.cos(_tickTimeX)* rCenter * lofl2;
-
-            //dvijenieX = dvijenieX + (float) (1.0 - Math.sin(( rCenter))) * lofl1 * rCenter * 0.01f;
-            //dvijenieY = dvijenieY + (float) (1.0 - Math.cos(( rCenter))) * lofl2 * rCenter * 0.01f;
-            _tickTimeX += 0.03f;
-
-
-            if (Math.sin(_tickTimeX) < 0.05) {
-                if (lol) {
-                    lofl1 = lofl1 * -1.f;
-                    lol = false;
+            if (Math.sin(_tickTimeX) < 0.05 && Math.sin(_tickTimeX)>0.0) {
+                if (_randomMoveX) {
+                    float random = (float)Math.random();
+                    if (random<0.75) {
+                        _directionX = _directionX * -1.f;
+                    }
+                    _randomMoveX = false;
                 }
             } else {
-                lol = true;
+                _randomMoveX = true;
             }
-            if (Math.cos(_tickTimeX) < 0.05) {
-                if (lol2) {
-                    lofl2 = lofl2 * -1.f;
-                    lol2 = false;
+            if (Math.cos(_tickTimeX) < 0.05 && Math.cos(_tickTimeX)>0.0) {
+                if (_randomMoveY) {
+                    float random = (float) Math.random();
+                    if (random<0.75) {
+                        _directionY = _directionY * -1.f;
+                    }
+                    _randomMoveY = false;
                 }
             } else {
-                lol2 = true;
+                _randomMoveY = true;
             }
 
-            if (_tickTimeX > _tickTimeXtemp) {
-                _tickTimeXtemp += 0.5*rCenter*PI;
-            }
 
-        }
+            if (dvijenieX>=1.0){
+               dvijenieX=1.0f;
+               _randomMoveX=!_randomMoveX;
+
+            }
+            if(dvijenieX<=0){
+                dvijenieX=0.0f;
+                _randomMoveX=!_randomMoveX;
+
+            }
+            if (dvijenieY<=0.0f){
+                dvijenieY=0.0f;
+                _randomMoveY=!_randomMoveY;
+
+            }
+            if (dvijenieY>=1.0){
+                dvijenieY=1.0f;
+                _randomMoveY=!_randomMoveY;
+
+            }
+        _tickTimeX += 0.05f;
+
+        Log.d("TAG", " ticktimeX = " + dvijenieX);
 
     }
 
-    public float lofl1 = 1.0f;
-    public float lofl2 = 1.0f;
-    public float lofl3 = 1.0f;
-    public float lofl4 = 1.0f;
-    public boolean lol = true;
-    public boolean lol2 = true;
+
 
     public void grad2_randomTrans() {
-        if (MainActivity.gradient2_typeMove == 2) {
-            _gradient2_tickTimeX++;
+        _gradient2_rCenter=MainActivity.gradient2_rCenterValue/5000;
+        _gradient2_dvijenieX = _gradient2_dvijenieX +  (float) Math.sin(_gradient2_tickTimeX)* _gradient2_rCenter * _gradient2_directionX;
+        _gradient2_dvijenieY = _gradient2_dvijenieY + (float) Math.cos(_gradient2_tickTimeX)* _gradient2_rCenter * _gradient2_directionY;
+        _gradient2_tickTimeX += 0.05f;
 
-            if (_gradient2_tuda) {
-                _gradient2_dvijenieX += MainActivity.gradient2_speedMoveValue / 5000;
-            }
-            if (!_gradient2_tuda) {
-                _gradient2_dvijenieX -= MainActivity.gradient2_speedMoveValue / 5000;
-            }
-            if (_gradient2_vverx) {
-                _gradient2_dvijenieY += MainActivity.gradient2_speedMoveValue / 5000;
-            }
-            if (!_gradient2_vverx) {
-                _gradient2_dvijenieY -= MainActivity.gradient2_speedMoveValue / 5000;
-            }
-            if (_gradient2_dvijenieX <= 0.0) {
-                _gradient2_dvijenieX = 0f;
-            }
-            if (_gradient2_dvijenieX >= 1.0f) {
-                _gradient2_dvijenieX = 1.0f;
-            }
-
-            if (_gradient2_dvijenieY <= 0.0) {
-                _gradient2_dvijenieY = 0f;
-            }
-            if (_gradient2_dvijenieY >= 1.0f) {
-                _gradient2_dvijenieY = 1.0f;
-            }
-
-
-            if (_gradient2_tickTimeX == 30.0) {
-                _gradient2_tickTimeX = 0.0f;
-                double random = Math.random();
-                if (random <= 0.25) {
-                    _gradient2_tuda = false;
+        if (Math.sin(_gradient2_tickTimeX) < 0.05 && Math.sin(_gradient2_tickTimeX) > 0.0) {
+            if (_gradient2_randomMoveX) {
+                float random = (float)Math.random();
+                if (random<0.75) {
+                    _gradient2_directionX = _gradient2_directionX * -1.f;
                 }
-                if (random <= 0.5 && random > 0.25) {
-                    _gradient2_vverx = false;
-                }
-                if (random <= 0.75 && random > 0.5) {
-                    _gradient2_tuda = true;
-                }
-                if (random <= 1.0 && random > 0.75) {
-                    _gradient2_vverx = true;
-                }
+                _gradient2_randomMoveX = false;
             }
+        } else {
+            _gradient2_randomMoveX = true;
         }
-        if (MainActivity.gradient2_typeMove == 1) {
-
-            if (_gradient2_tuda) {
-                _gradient2_dvijenieX += MainActivity.gradient2_speedMoveValue / 5000;
-                if (_gradient2_dvijenieX >= 1.0) {
-                    _gradient2_dvijenieX = 1.0f;
+        if (Math.cos(_gradient2_tickTimeX) < 0.05 && Math.cos(_gradient2_tickTimeX)>0.0) {
+            if (_gradient2_randomMoveY) {
+                float random = (float) Math.random();
+                if (random<0.75) {
+                    _gradient2_directionY = _gradient2_directionY * -1.f;
                 }
+                _gradient2_randomMoveY = false;
             }
-            if (!_gradient2_tuda) {
-                _gradient2_dvijenieX -= MainActivity.gradient2_speedMoveValue / 5000;
-                if (_gradient2_dvijenieX <= 0) {
-                    _gradient2_dvijenieX = 0.0f;
-                }
-            }
-            if (_gradient2_dvijenieY <= 0) {
-                _gradient2_tuda = true;
-            }
-            if (_gradient2_dvijenieY >= 1.0) {
-                _gradient2_tuda = false;
-
-            }
-            if (_gradient2_vverx) {
-                _gradient2_dvijenieY += MainActivity.gradient2_speedMoveValue / 5000;
-                if (_gradient2_dvijenieY >= 1.0) {
-                    _gradient2_dvijenieY = 1.0f;
-                }
-            }
-            if (!_gradient2_vverx) {
-                _gradient2_dvijenieY -= MainActivity.gradient2_speedMoveValue / 5000;
-                if (_gradient2_dvijenieY <= 0) {
-                    _gradient2_dvijenieY = 0.0f;
-                }
-            }
-
-            if (_gradient2_dvijenieX >= 1.0) {
-                _gradient2_vverx = true;
-            }
-            if (_gradient2_dvijenieX <= 0.0) {
-                _gradient2_vverx = false;
-            }
+        } else {
+            _gradient2_randomMoveY = true;
         }
-        if (MainActivity.gradient2_typeMove==3 || MainActivity.gradient2_typeMove==4) {
-            float xCenter = MainActivity.gradient2_xCenterValue / 100;
-            float yCenter = MainActivity.gradient2_yCenterValue / 100;
-            float rCenter = MainActivity.gradient2_rCenterValue / 100;
-            _gradient2_dvijenieX = (float) (xCenter + rCenter * Math.cos(_gradient2_tickTimeY));
-            _gradient2_dvijenieY = (float) (yCenter + rCenter * Math.sin(_gradient2_tickTimeY));
-            if(MainActivity.gradient2_typeMove==3 ) {
-                _gradient2_tickTimeY += MainActivity.gradient2_speedMoveValue / 1000;
-            }
-            if(MainActivity.gradient2_typeMove==4 ){
-                _gradient2_tickTimeY -= MainActivity.gradient2_speedMoveValue / 1000;
-            }
+
+        if (_gradient2_dvijenieX>=1.0){
+            _gradient2_dvijenieX=1.0f;
+            _gradient2_randomMoveX = !_gradient2_randomMoveX;
         }
+        if(_gradient2_dvijenieX<=0){
+            _gradient2_dvijenieX=0.0f;
+            _gradient2_randomMoveX = !_gradient2_randomMoveX;
+        }
+        if (_gradient2_dvijenieY<=0.0f){
+            _gradient2_dvijenieY=0.0f;
+            _gradient2_randomMoveY = !_gradient2_randomMoveY;
+        }
+        if (_gradient2_dvijenieY>=1.0){
+            _gradient2_dvijenieY=1.0f;
+            _gradient2_randomMoveY = !_gradient2_randomMoveY;
+        }
+
 
     }
 
     public void grad3_randomTrans() {
-        if (MainActivity.gradient3_typeMove == 1) {
-            if (_gradient3_tuda) {
-                _gradient3_dvijenieX += MainActivity.gradient3_speedMoveValue / 5000;
-                if (_gradient3_dvijenieX >= 1.0) {
-                    _gradient3_dvijenieX = 1.0f;
-                }
-            }
-            if (!_gradient3_tuda) {
-                _gradient3_dvijenieX -= MainActivity.gradient3_speedMoveValue / 5000;
-                if (_gradient3_dvijenieX <= 0) {
-                    _gradient3_dvijenieX = 0.0f;
-                }
-            }
-            if (_gradient3_dvijenieY <= 0) {
-                _gradient3_tuda = true;
-            }
-            if (_gradient3_dvijenieY >= 1.0) {
-                _gradient3_tuda = false;
+        _gradient3_rCenter=MainActivity.gradient3_rCenterValue/5000;
+        _gradient3_dvijenieX = _gradient3_dvijenieX +  (float) Math.sin(_gradient3_tickTimeX)* _gradient3_rCenter * _gradient3_directionX;
+        _gradient3_dvijenieY = _gradient3_dvijenieY +  (float) Math.cos(_gradient3_tickTimeX)* _gradient3_rCenter * _gradient3_directionY;
+        _gradient3_tickTimeX += 0.05f;
 
-            }
-            if (_gradient3_vverx) {
-                _gradient3_dvijenieY += MainActivity.gradient3_speedMoveValue / 5000;
-                if (_gradient3_dvijenieY >= 1.0) {
-                    _gradient3_dvijenieY = 1.0f;
+        if (Math.sin(_gradient3_tickTimeX) < 0.05 && Math.sin(_gradient3_tickTimeX) > 0.0) {
+            if (_gradient3_randomMoveX) {
+                float random = (float)Math.random();
+                if (random<0.5) {
+                    _gradient3_directionX = _gradient3_directionX * -1.f;
                 }
+                _gradient3_randomMoveX = false;
             }
-            if (!_gradient3_vverx) {
-                _gradient3_dvijenieY -= MainActivity.gradient3_speedMoveValue / 5000;
-                if (_gradient3_dvijenieY <= 0) {
-                    _gradient3_dvijenieY = 0.0f;
-                }
-            }
-
-            if (_gradient3_dvijenieX >= 1.0) {
-                _gradient3_vverx = true;
-            }
-            if (_gradient3_dvijenieX <= 0.0) {
-                _gradient3_vverx = false;
-            }
+        } else {
+            _gradient3_randomMoveX = true;
         }
-        if (MainActivity.gradient3_typeMove == 2) {
-            _gradient3_tickTimeX++;
-
-            if (_gradient3_tuda) {
-                _gradient3_dvijenieX += MainActivity.gradient3_speedMoveValue / 5000;
-            }
-            if (!_gradient3_tuda) {
-                _gradient3_dvijenieX -= MainActivity.gradient3_speedMoveValue / 5000;
-            }
-            if (_gradient3_vverx) {
-                _gradient3_dvijenieY += MainActivity.gradient3_speedMoveValue / 5000;
-            }
-            if (!_gradient3_vverx) {
-                _gradient3_dvijenieY -= MainActivity.gradient3_speedMoveValue / 5000;
-            }
-            if (_gradient3_dvijenieX <= 0.0) {
-                _gradient3_dvijenieX = 0f;
-            }
-            if (_gradient3_dvijenieX >= 1.0f) {
-                _gradient3_dvijenieX = 1.0f;
-            }
-
-            if (_gradient3_dvijenieY <= 0.0) {
-                _gradient3_dvijenieY = 0f;
-            }
-            if (_gradient3_dvijenieY >= 1.0f) {
-                _gradient3_dvijenieY = 1.0f;
-            }
-
-
-            if (_gradient3_tickTimeX == 30.0) {
-                _gradient3_tickTimeX = 0.0f;
-                double random = Math.random();
-                if (random <= 0.25) {
-                    _gradient3_tuda = false;
+        if (Math.cos(_gradient3_tickTimeX) < 0.05 && Math.cos(_gradient3_tickTimeX) > 0.0) {
+            if (_gradient3_randomMoveY) {
+                float random = (float) Math.random();
+                if (random<0.5) {
+                    _gradient3_directionY = _gradient3_directionY * -1.f;
                 }
-                if (random <= 0.5 && random > 0.25) {
-                    _gradient3_vverx = false;
-                }
-                if (random <= 0.75 && random > 0.5) {
-                    _gradient3_tuda = true;
-                }
-                if (random <= 1.0 && random > 0.75) {
-                    _gradient3_vverx = true;
-                }
+                _gradient3_randomMoveY = false;
             }
+        } else {
+            _gradient3_randomMoveY = true;
         }
-        if (MainActivity.gradient3_typeMove==3 || MainActivity.gradient3_typeMove==4) {
-            float xCenter = MainActivity.gradient3_xCenterValue / 100;
-            float yCenter = MainActivity.gradient3_yCenterValue / 100;
-            float rCenter = MainActivity.gradient3_rCenterValue / 100;
-            _gradient3_dvijenieX = (float) (xCenter + rCenter * Math.cos(_gradient3_tickTimeY));
-            _gradient3_dvijenieY = (float) (yCenter + rCenter * Math.sin(_gradient3_tickTimeY));
-            if(MainActivity.gradient3_typeMove==3 ) {
-                _gradient3_tickTimeY += MainActivity.gradient3_speedMoveValue / 1000;
-            }
-            if(MainActivity.gradient3_typeMove==4 ){
-                _gradient3_tickTimeY -= MainActivity.gradient3_speedMoveValue / 1000;
-            }
+
+        if (_gradient3_dvijenieX>=1.0){
+            _gradient3_dvijenieX=1.0f;
+            _gradient3_randomMoveX = !_gradient3_randomMoveX;
+
+        }
+        if(_gradient3_dvijenieX<=0){
+            _gradient3_dvijenieX=0.0f;
+            _gradient3_randomMoveX = !_gradient3_randomMoveX;
+        }
+        if (_gradient3_dvijenieY<=0.0f){
+            _gradient3_dvijenieY=0.0f;
+            _gradient3_randomMoveY = !_gradient3_randomMoveY;
+        }
+        if (_gradient3_dvijenieY>=1.0){
+            _gradient3_dvijenieY=1.0f;
+            _gradient3_randomMoveY = !_gradient3_randomMoveY;
         }
 
     }
 
     public void grad4_randomTrans() {
-        if (MainActivity.gradient4_typeMove == 1) {
-            if (_gradient4_tuda) {
-                _gradient4_dvijenieX += MainActivity.gradient4_speedMoveValue / 5000;
-                if (_gradient4_dvijenieX >= 1.0) {
-                    _gradient4_dvijenieX = 1.0f;
-                }
-            }
-            if (!_gradient4_tuda) {
-                _gradient4_dvijenieX -= MainActivity.gradient4_speedMoveValue / 5000;
-                if (_gradient4_dvijenieX <= 0) {
-                    _gradient4_dvijenieX = 0.0f;
-                }
-            }
-            if (_gradient4_dvijenieY <= 0) {
-                _gradient4_tuda = true;
-            }
-            if (_gradient4_dvijenieY >= 1.0) {
-                _gradient4_tuda = false;
+        _gradient4_rCenter=MainActivity.gradient4_rCenterValue/5000;
+        _gradient4_dvijenieX = _gradient4_dvijenieX + (float) Math.sin(_gradient4_tickTimeX)* _gradient4_rCenter * _gradient4_directionX;
+        _gradient4_dvijenieY = _gradient4_dvijenieY + (float) Math.cos(_gradient4_tickTimeX)* _gradient4_rCenter * _gradient4_directionY;
+        _gradient4_tickTimeX += 0.05f;
 
-            }
-            if (_gradient4_vverx) {
-                _gradient4_dvijenieY += MainActivity.gradient4_speedMoveValue / 5000;
-                if (_gradient4_dvijenieY >= 1.0) {
-                    _gradient4_dvijenieY = 1.0f;
+        if (Math.sin(_gradient4_tickTimeX) < 0.05 && Math.sin(_gradient4_tickTimeX) > 0.0) {
+            if (_gradient4_randomMoveX) {
+                float random = (float)Math.random();
+                if (random<0.5) {
+                    _gradient4_directionX = _gradient4_directionX * -1.f;
                 }
+                _gradient4_randomMoveX = false;
             }
-            if (!_gradient4_vverx) {
-                _gradient4_dvijenieY -= MainActivity.gradient4_speedMoveValue / 5000;
-                if (_gradient4_dvijenieY <= 0) {
-                    _gradient4_dvijenieY = 0.0f;
+        } else {
+            _gradient4_randomMoveX = true;
+        }
+        if (Math.cos(_gradient4_tickTimeX) < 0.05 && Math.cos(_gradient4_tickTimeX) > 0.0) {
+            if (_gradient4_randomMoveY) {
+                float random = (float) Math.random();
+                if (random<0.5) {
+                    _gradient4_directionY = _gradient4_directionY * -1.f;
                 }
+                _gradient4_randomMoveY = false;
             }
-
-            if (_gradient4_dvijenieX >= 1.0) {
-                _gradient4_vverx = true;
-            }
-            if (_gradient4_dvijenieX <= 0.0) {
-                _gradient4_vverx = false;
-            }
+        } else {
+            _gradient4_randomMoveY = true;
         }
 
-        if (MainActivity.gradient4_typeMove == 2) {
-            _gradient4_tickTimeX++;
-
-            if (_gradient4_tuda) {
-                _gradient4_dvijenieX += MainActivity.gradient4_speedMoveValue / 5000;
-            }
-            if (!_gradient4_tuda) {
-                _gradient4_dvijenieX -= MainActivity.gradient4_speedMoveValue / 5000;
-            }
-            if (_gradient4_vverx) {
-                _gradient4_dvijenieY += MainActivity.gradient4_speedMoveValue / 5000;
-            }
-            if (!_gradient4_vverx) {
-                _gradient4_dvijenieY -= MainActivity.gradient4_speedMoveValue / 5000;
-            }
-            if (_gradient4_dvijenieX <= 0.0) {
-                _gradient4_dvijenieX = 0f;
-            }
-            if (_gradient4_dvijenieX >= 1.0f) {
-                _gradient4_dvijenieX = 1.0f;
-            }
-
-            if (_gradient4_dvijenieY <= 0.0) {
-                _gradient4_dvijenieY = 0f;
-            }
-            if (_gradient4_dvijenieY >= 1.0f) {
-                _gradient4_dvijenieY = 1.0f;
-            }
-
-
-            if (_gradient4_tickTimeX == 30.0) {
-                _gradient4_tickTimeX = 0.0f;
-                double random = Math.random();
-                if (random <= 0.25) {
-                    _gradient4_tuda = false;
-                }
-                if (random <= 0.5 && random > 0.25) {
-                    _gradient4_vverx = false;
-                }
-                if (random <= 0.75 && random > 0.5) {
-                    _gradient4_tuda = true;
-                }
-                if (random <= 1.0 && random > 0.75) {
-                    _gradient4_vverx = true;
-                }
-            }
+        if (_gradient4_dvijenieX>=1.0){
+            _gradient4_dvijenieX=1.0f;
+            _gradient4_randomMoveX = !_gradient4_randomMoveX;
         }
-        if (MainActivity.gradient4_typeMove==3 || MainActivity.gradient4_typeMove==4 ) {
-            float xCenter = MainActivity.gradient4_xCenterValue / 100;
-            float yCenter = MainActivity.gradient4_yCenterValue / 100;
-            float rCenter = MainActivity.gradient4_rCenterValue / 100;
-            _gradient4_dvijenieX = (float) (xCenter + rCenter * Math.cos(_gradient4_tickTimeY));
-            _gradient4_dvijenieY = (float) (yCenter + rCenter * Math.sin(_gradient4_tickTimeY));
-            if(MainActivity.gradient4_typeMove==3 ) {
-                _gradient4_tickTimeY += MainActivity.gradient4_speedMoveValue / 1000;
-            }
-            if(MainActivity.gradient4_typeMove==4 ){
-                _gradient4_tickTimeY -= MainActivity.gradient4_speedMoveValue / 1000;
-            }
+        if(_gradient4_dvijenieX<=0){
+            _gradient4_dvijenieX=0.0f;
+            _gradient4_randomMoveX = !_gradient4_randomMoveX;
+        }
+        if (_gradient4_dvijenieY<=0.0f){
+            _gradient4_dvijenieY=0.0f;
+            _gradient4_randomMoveY = !_gradient4_randomMoveY;
+        }
+        if (_gradient4_dvijenieY>=1.0){
+            _gradient4_dvijenieY=1.0f;
+            _gradient4_randomMoveY = !_gradient4_randomMoveY;
         }
 
     }

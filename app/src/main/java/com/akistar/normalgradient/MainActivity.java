@@ -15,39 +15,36 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements  View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     GLSurfaceView glView;
-    SeekBar disp1SB, disp2SB, speedMoveSB, speedPulsSB, speedColorSB, alphaSB,rCenterSB;
-    public static float disp1Value, disp2Value, speedMoveValue, speedPulsValue, speedColorValue,alphaValue,typeofGrad=1,rCenterValue=0.1f;
-    public static float gradient2_disp1Value, gradient2_disp2Value, gradient2_speedMoveValue, gradient2_speedPulsValue,
-            gradient2_speedColorValue,gradient2_alphaValue,gradient2_typeMove=1,gradient2_typeOfGrad=1,
-            gradient2_rCenterValue=0.1f;
+    SeekBar disp1SB, disp2SB, speedPulsSB, speedColorSB, rCenterSB;
+    public static float disp1Value, disp2Value, speedPulsValue, speedColorValue, typeofGrad = 3, rCenterValue = 0.1f;
 
-    public static float gradient3_disp1Value, gradient3_disp2Value, gradient3_speedMoveValue, gradient3_speedPulsValue,
-            gradient3_speedColorValue,gradient3_alphaValue,gradient3_typeOfGrad=1,
-             gradient3_rCenterValue;
+    public static float gradient2_disp1Value, gradient2_disp2Value, gradient2_speedPulsValue,
+            gradient2_speedColorValue, gradient2_typeOfGrad = 3,
+            gradient2_rCenterValue = 0.1f;
 
-    public static float gradient4_disp1Value, gradient4_disp2Value, gradient4_speedMoveValue, gradient4_speedPulsValue,
-            gradient4_speedColorValue,gradient4_alphaValue,gradient4_typeOfGrad=1,
-             gradient4_rCenterValue;
+    public static float gradient3_disp1Value, gradient3_disp2Value, gradient3_speedPulsValue,
+            gradient3_speedColorValue, gradient3_typeOfGrad = 3,
+            gradient3_rCenterValue;
+
+    public static float gradient4_disp1Value, gradient4_disp2Value, gradient4_speedPulsValue,
+            gradient4_speedColorValue, gradient4_typeOfGrad = 3,
+            gradient4_rCenterValue;
 
     TextView color1, color2, txtDisp1, txtDisp2, txtSpeedMove, txtSpeedPulse, txtSpeedColor;
     public static String color1Value, color2Value;
     public static String gradient2_color1Value, gradient2_color2Value;
     public static String gradient3_color1Value, gradient3_color2Value;
     public static String gradient4_color1Value, gradient4_color2Value;
-    RadioButton rbGradient1, rbGradient2, rbGradient3, rbGradient4, rbClockMove, rbRandomMove, rbGausseType,rbTanType,rbAlphaType,rbCircleMove,rbCounterCircleMove;
+    RadioButton rbGradient1, rbGradient2, rbGradient3, rbGradient4, rbGausseType, rbTanType, rbAlphaType;
     Button btnOk, btnAdd, btnDel;
     public static boolean GRADIENT_2 = false;
     public static boolean GRADIENT_3 = false;
     public static boolean GRADIENT_4 = false;
     public static int kolichestvoGradienotv = 1;
     private BottomSheetBehavior mBottomSheetBehavior;
-    boolean isClick=false;
-
-
-
-
+    boolean isClick = false;
 
 
     @Override
@@ -57,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 
         disp1SB = (SeekBar) findViewById(R.id.disp1SB);
         disp2SB = (SeekBar) findViewById(R.id.disp2SB);
-        speedMoveSB = (SeekBar) findViewById(R.id.speedMoveSB);
         speedPulsSB = (SeekBar) findViewById(R.id.speedPulsSB);
         speedColorSB = (SeekBar) findViewById(R.id.speedColorSB);
         color1 = (TextView) findViewById(R.id.txtColor1);
@@ -68,8 +64,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         btnOk = findViewById(R.id.btnOk);
         btnOk.setOnClickListener(this);
 
-        alphaSB = findViewById(R.id.alphaSB);
-        alphaSB.setOnSeekBarChangeListener(alphaChangeListener);
 
         rbGradient1 = findViewById(R.id.rbGradient1);
         rbGradient2 = findViewById(R.id.rbGradient2);
@@ -83,20 +77,14 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         rbGradient2.setVisibility(View.INVISIBLE);
         rbGradient3.setVisibility(View.INVISIBLE);
         rbGradient4.setVisibility(View.INVISIBLE);
-        rbClockMove =findViewById(R.id.rbClockMove);
-        rbRandomMove =findViewById(R.id.rbRandomMove);
-        rbClockMove.setOnClickListener(this);
-        rbRandomMove.setOnClickListener(this);
+
         rbGausseType = findViewById(R.id.rbGauseType);
         rbTanType = findViewById(R.id.rbTanType);
         rbGausseType.setOnClickListener(this);
         rbTanType.setOnClickListener(this);
-        rbAlphaType=findViewById(R.id.rbAlphaType);
+        rbAlphaType = findViewById(R.id.rbAlphaType);
         rbAlphaType.setOnClickListener(this);
-        rbCircleMove = findViewById(R.id.rbCircleMove);
-        rbCircleMove.setOnClickListener(this);
-        rbCounterCircleMove = findViewById(R.id.rbCounterCircleMove);
-        rbCounterCircleMove.setOnClickListener(this);
+        rbAlphaType.setChecked(true);
 
         btnAdd = findViewById(R.id.btnAdd);
         btnDel = findViewById(R.id.btnDel);
@@ -105,13 +93,12 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 
         disp1SB.setOnSeekBarChangeListener(disp1ChangeListener);
         disp2SB.setOnSeekBarChangeListener(disp2ChangeListener);
-        speedMoveSB.setOnSeekBarChangeListener(speedMoveChangeListener);
+
         speedPulsSB.setOnSeekBarChangeListener(speedPulseChangeListener);
         speedColorSB.setOnSeekBarChangeListener(speedColorChangeListener);
 
         txtDisp1 = findViewById(R.id.txtDisp1);
         txtDisp2 = findViewById(R.id.txtDisp2);
-        txtSpeedMove = findViewById(R.id.txtSpeedMove);
         txtSpeedPulse = findViewById(R.id.txtSpeedPulse);
         txtSpeedColor = findViewById(R.id.txtSpeedColor);
 
@@ -135,10 +122,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         });
 
 
-
-
-
-
         color1Value = "#82119e";
         color2Value = "#ff7300";
         gradient2_color1Value = "#d41919";
@@ -160,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         glView.setEGLContextClientVersion(2);
         glView.setPreserveEGLContextOnPause(true);
         glView.setRenderer(new Render(this));
-
 
 
     }
@@ -189,16 +171,16 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-            if(rbGradient1.isChecked()) {
+            if (rbGradient1.isChecked()) {
                 disp1Value = (float) i;
             }
-            if(rbGradient2.isChecked()){
+            if (rbGradient2.isChecked()) {
                 gradient2_disp1Value = (float) i;
             }
-            if(rbGradient3.isChecked()){
+            if (rbGradient3.isChecked()) {
                 gradient3_disp1Value = (float) i;
             }
-            if(rbGradient4.isChecked()){
+            if (rbGradient4.isChecked()) {
                 gradient4_disp1Value = (float) i;
             }
 
@@ -218,45 +200,17 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-            if(rbGradient1.isChecked()) {
+            if (rbGradient1.isChecked()) {
                 disp2Value = (float) i;
             }
-            if(rbGradient2.isChecked()){
+            if (rbGradient2.isChecked()) {
                 gradient2_disp2Value = (float) i;
             }
-            if(rbGradient3.isChecked()){
+            if (rbGradient3.isChecked()) {
                 gradient3_disp2Value = (float) i;
             }
-            if(rbGradient4.isChecked()){
+            if (rbGradient4.isChecked()) {
                 gradient4_disp2Value = (float) i;
-            }
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-
-        }
-    };
-    private SeekBar.OnSeekBarChangeListener speedMoveChangeListener = new SeekBar.OnSeekBarChangeListener() {
-
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-            if(rbGradient1.isChecked()) {
-                speedMoveValue = (float) i;
-            }
-            if(rbGradient2.isChecked()){
-                gradient2_speedMoveValue = (float) i;
-            }
-            if(rbGradient3.isChecked()){
-                gradient3_speedMoveValue = (float) i;
-            }
-            if(rbGradient4.isChecked()){
-                gradient4_speedMoveValue = (float) i;
             }
         }
 
@@ -274,16 +228,16 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-            if(rbGradient1.isChecked()) {
+            if (rbGradient1.isChecked()) {
                 speedPulsValue = (float) i;
             }
-            if(rbGradient2.isChecked()){
+            if (rbGradient2.isChecked()) {
                 gradient2_speedPulsValue = (float) i;
             }
-            if(rbGradient3.isChecked()){
+            if (rbGradient3.isChecked()) {
                 gradient3_speedPulsValue = (float) i;
             }
-            if(rbGradient4.isChecked()){
+            if (rbGradient4.isChecked()) {
                 gradient4_speedPulsValue = (float) i;
             }
         }
@@ -302,47 +256,18 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-            if(rbGradient1.isChecked()) {
+            if (rbGradient1.isChecked()) {
                 speedColorValue = (float) i;
             }
-            if(rbGradient2.isChecked()){
+            if (rbGradient2.isChecked()) {
                 gradient2_speedColorValue = (float) i;
             }
-            if(rbGradient3.isChecked()){
+            if (rbGradient3.isChecked()) {
                 gradient3_speedColorValue = (float) i;
             }
-            if(rbGradient4.isChecked()){
+            if (rbGradient4.isChecked()) {
                 gradient4_speedColorValue = (float) i;
             }
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-
-        }
-    };
-    private SeekBar.OnSeekBarChangeListener alphaChangeListener = new SeekBar.OnSeekBarChangeListener() {
-
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-            if(rbGradient1.isChecked()) {
-                alphaValue = (float) i;
-            }
-            if(rbGradient2.isChecked()){
-                gradient2_alphaValue = (float)  i;
-            }
-            if(rbGradient3.isChecked()){
-                gradient3_alphaValue = (float)  i;
-            }
-            if(rbGradient4.isChecked()){
-                gradient4_alphaValue = (float)  i;
-            }
-
         }
 
         @Override
@@ -359,17 +284,17 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-            if(rbGradient1.isChecked()) {
+            if (rbGradient1.isChecked()) {
                 rCenterValue = (float) i;
             }
-            if(rbGradient2.isChecked()){
-                gradient2_rCenterValue = (float)  i;
+            if (rbGradient2.isChecked()) {
+                gradient2_rCenterValue = (float) i;
             }
-            if(rbGradient3.isChecked()){
-                gradient3_rCenterValue = (float)  i;
+            if (rbGradient3.isChecked()) {
+                gradient3_rCenterValue = (float) i;
             }
-            if(rbGradient4.isChecked()){
-                gradient4_rCenterValue = (float)  i;
+            if (rbGradient4.isChecked()) {
+                gradient4_rCenterValue = (float) i;
             }
 
         }
@@ -386,213 +311,216 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     };
 
 
-
-
-
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btnAdd:
                 kolichestvoGradienotv++;
-                if(kolichestvoGradienotv==4){
+                if (kolichestvoGradienotv == 4) {
                     rbGradient4.setVisibility(View.VISIBLE);
-                    GRADIENT_4=true;
+                    GRADIENT_4 = true;
                 }
-                if(kolichestvoGradienotv>=2){
+                if (kolichestvoGradienotv >= 2) {
                     rbGradient2.setVisibility(View.VISIBLE);
-                    GRADIENT_2=true;
+                    GRADIENT_2 = true;
                 }
-                if(kolichestvoGradienotv>=3){
+                if (kolichestvoGradienotv >= 3) {
                     rbGradient3.setVisibility(View.VISIBLE);
-                    GRADIENT_3=true;
+                    GRADIENT_3 = true;
                 }
-                if(kolichestvoGradienotv>4){
-                    kolichestvoGradienotv=4;
+                if (kolichestvoGradienotv > 4) {
+                    kolichestvoGradienotv = 4;
                 }
                 break;
             case R.id.btnDel:
                 kolichestvoGradienotv--;
-                if(kolichestvoGradienotv<=1){
-                    kolichestvoGradienotv=1;
+                if (kolichestvoGradienotv <= 1) {
+                    kolichestvoGradienotv = 1;
                 }
-                if(kolichestvoGradienotv<=3){
+                if (kolichestvoGradienotv <= 3) {
                     rbGradient4.setVisibility(View.INVISIBLE);
-                    GRADIENT_4=false;
+                    GRADIENT_4 = false;
                 }
-                if(kolichestvoGradienotv<=2){
+                if (kolichestvoGradienotv <= 2) {
                     rbGradient3.setVisibility(View.INVISIBLE);
-                    GRADIENT_3=false;
+                    GRADIENT_3 = false;
                 }
-                if(kolichestvoGradienotv==1){
+                if (kolichestvoGradienotv == 1) {
                     rbGradient2.setVisibility(View.INVISIBLE);
-                    GRADIENT_2=false;
+                    GRADIENT_2 = false;
                 }
                 break;
             case R.id.rbGradient1:
+                color1.setEnabled(true);
+                color2.setEnabled(true);
                 color1.setText(color1Value);
                 color2.setText(color2Value);
-                disp1SB.setProgress((int)disp1Value);
-                disp2SB.setProgress((int)disp2Value);
-                speedMoveSB.setProgress((int)speedMoveValue);
-                speedPulsSB.setProgress((int)speedPulsValue);
-                speedColorSB.setProgress((int)speedColorValue);
-                alphaSB.setProgress((int)alphaValue);
-                rCenterSB.setProgress((int)rCenterValue);
+                disp1SB.setProgress((int) disp1Value);
+                disp2SB.setProgress((int) disp2Value);
+                btnOk.setEnabled(true);
+                speedPulsSB.setProgress((int) speedPulsValue);
+                speedColorSB.setProgress((int) speedColorValue);
+                rbGausseType.setEnabled(true);
+                rbTanType.setEnabled(true);
+                rCenterSB.setProgress((int) rCenterValue);
 
-                if(typeofGrad==1){
+                if (typeofGrad == 1) {
                     rbGausseType.setChecked(true);
                 }
-                if(typeofGrad==2){
+                if (typeofGrad == 2) {
                     rbTanType.setChecked(true);
                 }
-                if(typeofGrad==3){
+                if (typeofGrad == 3) {
                     rbAlphaType.setChecked(true);
                 }
 
 
                 break;
             case R.id.rbGradient2:
+                color1.setEnabled(false);
+                color2.setEnabled(false);
                 color1.setText(gradient2_color1Value);
                 color2.setText(gradient2_color2Value);
-                disp1SB.setProgress((int)gradient2_disp1Value);
-                disp2SB.setProgress((int)gradient2_disp2Value);
-                speedMoveSB.setProgress((int)gradient2_speedMoveValue);
-                speedPulsSB.setProgress((int)gradient2_speedPulsValue);
-                speedColorSB.setProgress((int)gradient2_speedColorValue);
-                alphaSB.setProgress((int)gradient2_alphaValue);
-                rCenterSB.setProgress((int)gradient2_rCenterValue);
-                if(gradient2_typeOfGrad==1){
+                disp1SB.setProgress((int) gradient2_disp1Value);
+                disp2SB.setProgress((int) gradient2_disp2Value);
+                rbGausseType.setEnabled(false);
+                rbTanType.setEnabled(false);
+                btnOk.setEnabled(false);
+                speedPulsSB.setProgress((int) gradient2_speedPulsValue);
+                speedColorSB.setProgress((int) gradient2_speedColorValue);
+                rCenterSB.setProgress((int) gradient2_rCenterValue);
+
+                if (gradient2_typeOfGrad == 1) {
                     rbGausseType.setChecked(true);
                 }
-                if(gradient2_typeOfGrad==2){
+                if (gradient2_typeOfGrad == 2) {
                     rbTanType.setChecked(true);
                 }
-                if(gradient2_typeOfGrad==3){
+                if (gradient2_typeOfGrad == 3) {
                     rbAlphaType.setChecked(true);
                 }
                 break;
             case R.id.rbGradient3:
+                color1.setEnabled(false);
+                color2.setEnabled(false);
                 color1.setText(gradient3_color1Value);
                 color2.setText(gradient3_color2Value);
-                disp1SB.setProgress((int)gradient3_disp1Value);
-                disp2SB.setProgress((int)gradient3_disp2Value);
-                speedMoveSB.setProgress((int)gradient3_speedMoveValue);
-                speedPulsSB.setProgress((int)gradient3_speedPulsValue);
-                speedColorSB.setProgress((int)gradient3_speedColorValue);
-                alphaSB.setProgress((int)gradient3_alphaValue);
-                rCenterSB.setProgress((int)gradient3_rCenterValue);
+                disp1SB.setProgress((int) gradient3_disp1Value);
+                disp2SB.setProgress((int) gradient3_disp2Value);
+                rbGausseType.setEnabled(false);
+                rbTanType.setEnabled(false);
+                btnOk.setEnabled(false);
+                speedPulsSB.setProgress((int) gradient3_speedPulsValue);
+                speedColorSB.setProgress((int) gradient3_speedColorValue);
 
-                if(gradient3_typeOfGrad==1){
+                rCenterSB.setProgress((int) gradient3_rCenterValue);
+
+                if (gradient3_typeOfGrad == 1) {
                     rbGausseType.setChecked(true);
                 }
-                if(gradient3_typeOfGrad==2){
+                if (gradient3_typeOfGrad == 2) {
                     rbTanType.setChecked(true);
                 }
 
-                if(gradient3_typeOfGrad==3){
+                if (gradient3_typeOfGrad == 3) {
                     rbAlphaType.setChecked(true);
                 }
                 break;
             case R.id.rbGradient4:
+                color1.setEnabled(false);
+                color2.setEnabled(false);
                 color1.setText(gradient4_color1Value);
                 color2.setText(gradient4_color2Value);
-                disp1SB.setProgress((int)gradient4_disp1Value);
-                disp2SB.setProgress((int)gradient4_disp2Value);
-                speedMoveSB.setProgress((int)gradient4_speedMoveValue);
-                speedPulsSB.setProgress((int)gradient4_speedPulsValue);
-                speedColorSB.setProgress((int)gradient4_speedColorValue);
-                alphaSB.setProgress((int)gradient4_alphaValue);
-                rCenterSB.setProgress((int)gradient4_rCenterValue);
+                disp1SB.setProgress((int) gradient4_disp1Value);
+                disp2SB.setProgress((int) gradient4_disp2Value);
 
-                if(gradient4_typeOfGrad==1){
+                speedPulsSB.setProgress((int) gradient4_speedPulsValue);
+                speedColorSB.setProgress((int) gradient4_speedColorValue);
+
+                rCenterSB.setProgress((int) gradient4_rCenterValue);
+                rbGausseType.setEnabled(false);
+                rbTanType.setEnabled(false);
+                btnOk.setEnabled(false);
+
+                if (gradient4_typeOfGrad == 1) {
                     rbGausseType.setChecked(true);
                 }
-                if(gradient4_typeOfGrad==2){
+                if (gradient4_typeOfGrad == 2) {
                     rbTanType.setChecked(true);
                 }
-
-                if(gradient4_typeOfGrad==3){
+                if (gradient4_typeOfGrad == 3) {
                     rbAlphaType.setChecked(true);
                 }
                 break;
             case R.id.btnOk:
-                if(rbGradient1.isChecked()) {
+                if (rbGradient1.isChecked()) {
                     color1Value = color1.getText().toString();
                     color2Value = color2.getText().toString();
                 }
-                if(rbGradient2.isChecked()) {
+                if (rbGradient2.isChecked()) {
                     gradient2_color1Value = color1.getText().toString();
                     gradient2_color2Value = color2.getText().toString();
                 }
-                if(rbGradient3.isChecked()) {
+                if (rbGradient3.isChecked()) {
                     gradient3_color1Value = color1.getText().toString();
                     gradient3_color2Value = color2.getText().toString();
                 }
-                if(rbGradient4.isChecked()) {
+                if (rbGradient4.isChecked()) {
                     gradient4_color1Value = color1.getText().toString();
                     gradient4_color2Value = color2.getText().toString();
                 }
 
                 break;
-
             case R.id.rbGauseType:
-                if(rbGradient1.isChecked()) {
-                    typeofGrad=1;
+                if (rbGradient1.isChecked()) {
+                    typeofGrad = 1;
                 }
-                if(rbGradient2.isChecked()) {
-                    gradient2_typeOfGrad=1;
+                if (rbGradient2.isChecked()) {
+                    gradient2_typeOfGrad = 1;
                 }
-                if(rbGradient3.isChecked()) {
-                    gradient3_typeOfGrad=1;
+                if (rbGradient3.isChecked()) {
+                    gradient3_typeOfGrad = 1;
                 }
-                if(rbGradient4.isChecked()) {
-                    gradient4_typeOfGrad=1;
+                if (rbGradient4.isChecked()) {
+                    gradient4_typeOfGrad = 1;
                 }
                 break;
             case R.id.rbTanType:
-                if(rbGradient1.isChecked()) {
-                    typeofGrad=2;
+                if (rbGradient1.isChecked()) {
+                    typeofGrad = 2;
                 }
-                if(rbGradient2.isChecked()) {
-                    gradient2_typeOfGrad=2;
+                if (rbGradient2.isChecked()) {
+                    gradient2_typeOfGrad = 2;
                 }
-                if(rbGradient3.isChecked()) {
-                    gradient3_typeOfGrad=2;
+                if (rbGradient3.isChecked()) {
+                    gradient3_typeOfGrad = 2;
                 }
-                if(rbGradient4.isChecked()) {
-                    gradient4_typeOfGrad=2;
+                if (rbGradient4.isChecked()) {
+                    gradient4_typeOfGrad = 2;
                 }
                 break;
             case R.id.rbAlphaType:
-                if(rbGradient1.isChecked()) {
-                    typeofGrad=3;
+                if (rbGradient1.isChecked()) {
+                    typeofGrad = 3;
                 }
-                if(rbGradient2.isChecked()) {
-                    gradient2_typeOfGrad=3;
+                if (rbGradient2.isChecked()) {
+                    gradient2_typeOfGrad = 3;
                 }
-                if(rbGradient3.isChecked()) {
-                    gradient3_typeOfGrad=3;
+                if (rbGradient3.isChecked()) {
+                    gradient3_typeOfGrad = 3;
                 }
-                if(rbGradient4.isChecked()) {
-                    gradient4_typeOfGrad=3;
+                if (rbGradient4.isChecked()) {
+                    gradient4_typeOfGrad = 3;
                 }
                 break;
             case R.id.btnSheetMenu:
-                if(isClick==false)
+                if (isClick == false)
                     mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-
                 else
                     mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-                isClick=!isClick;
-
+                isClick = !isClick;
                 break;
-
-
-
-
-
         }
 
     }

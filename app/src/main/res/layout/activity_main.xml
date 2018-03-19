@@ -146,6 +146,18 @@
                     android:layout_height="wrap_content"
                     >
 
+                    <TextView
+                        android:id="@+id/txtColorMenu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Настройки цвета"
+                        android:textSize="25dp"
+                        android:textStyle="bold"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+
                     <EditText
                         android:id="@+id/txtColor1"
                         android:layout_width="100dp"
@@ -155,7 +167,7 @@
                         android:inputType="textPersonName"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toLeftOf="@+id/txtColor2"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtColorMenu"
                         />
 
                     <EditText
@@ -167,7 +179,7 @@
                         android:inputType="textPersonName"
                         app:layout_constraintLeft_toRightOf="@+id/txtColor1"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtColorMenu"
                         />
 
                     <Button
@@ -179,37 +191,104 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/txtColor1"/>
+                    <TextView
+                        android:id="@+id/txtSpeedColor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Скорость переливания"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btnOk"
+                        />
+
+                    <SeekBar
+                        android:id="@+id/speedColorSB"
+                        android:layout_width="220dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txtSpeedColor"/>
+
+                    <View
+                        android:id="@+id/lineTypesOfGradient"
+                        android:layout_width="fill_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/speedColorSB"
+                        android:background="@color/white" />
+
+                    <TextView
+                        android:id="@+id/txtTypeOfGradMenu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Тип градиента"
+                        android:textSize="25dp"
+                        android:textStyle="bold"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lineTypesOfGradient"
+                        />
+
 
                     <RadioGroup
                         android:id="@+id/rbTypeOfGrad"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
+                        android:layout_marginTop="10dp"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/btnOk">
+                        app:layout_constraintTop_toBottomOf="@+id/txtTypeOfGradMenu">
 
                         <RadioButton
                             android:id="@+id/rbGauseType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Гаусса"/>
-
-                        <RadioButton
-                            android:id="@+id/rbTanType"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Не гаусса"/>
+                            android:text="распределение Гаусса, 2 цвета"/>
 
                         <RadioButton
                             android:id="@+id/rbAlphaType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Альфа градиент"/>
+                            android:text="распределение Гаусса, альфа"/>
+
+                        <RadioButton
+                            android:id="@+id/rbTanType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="atan(x^x-y)"/>
+
+
                     </RadioGroup>
+
+                    <View
+                        android:id="@+id/lineSettingsOfGradient"
+                        android:layout_width="fill_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/rbTypeOfGrad"
+                        android:background="@color/white" />
+                    <TextView
+                        android:id="@+id/txtSettingsOfGradMenu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Настройка градиента"
+                        android:textSize="25dp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lineSettingsOfGradient"
+                        />
 
                     <TextView
                         android:id="@+id/txtDisp1"
@@ -219,7 +298,7 @@
                         android:layout_marginTop="10dp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/rbTypeOfGrad"
+                        app:layout_constraintTop_toBottomOf="@+id/txtSettingsOfGradMenu"
                         />
 
                     <SeekBar
@@ -253,118 +332,6 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/txtDisp2"/>
 
-
-                    <TextView
-                        android:id="@+id/txtSpeedMove"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Скорость движения"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/disp2SB"/>
-
-                    <SeekBar
-                        android:id="@+id/speedMoveSB"
-                        android:layout_width="220dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="10dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txtSpeedMove"/>
-
-                    <RadioGroup
-                        android:id="@+id/typeOfMoveRG"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/speedMoveSB">
-
-                        <RadioButton
-                            android:id="@+id/rbClockMove"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="По часовой"/>
-
-                        <RadioButton
-                            android:id="@+id/rbRandomMove"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="случайное"/>
-
-                        <RadioButton
-                            android:id="@+id/rbCircleMove"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="по кругу"/>
-
-                        <RadioButton
-                            android:id="@+id/rbCounterCircleMove"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="против круга"/>
-                    </RadioGroup>
-
-                    <TextView
-                        android:id="@+id/txtCenterX"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="X центра окружности"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/typeOfMoveRG"/>
-                    <SeekBar
-                        android:id="@+id/xCircleSB"
-                        android:layout_width="220dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="10dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txtCenterX"/>
-
-                    <TextView
-                        android:id="@+id/txtCenterY"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Y центра окружности"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/xCircleSB"/>
-                    <SeekBar
-                        android:id="@+id/yCircleSB"
-                        android:layout_width="220dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="10dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txtCenterY"/>
-                    <TextView
-                        android:id="@+id/txtCenterR"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Радиус"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/yCircleSB"/>
-                    <SeekBar
-                        android:id="@+id/rCircleSB"
-                        android:layout_width="220dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="10dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txtCenterR"/>
-
-
                     <TextView
                         android:id="@+id/txtSpeedPulse"
                         android:layout_width="wrap_content"
@@ -373,7 +340,7 @@
                         android:text="Интенсивность пульсирования"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/rCircleSB"/>
+                        app:layout_constraintTop_toBottomOf="@+id/disp2SB"/>
 
                     <SeekBar
                         android:id="@+id/speedPulsSB"
@@ -384,43 +351,52 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/txtSpeedPulse"/>
 
-                    <TextView
-                        android:id="@+id/txtSpeedColor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Скорость переливания"
+                    <View
+                        android:id="@+id/lineSettingsOfMove"
+                        android:layout_width="fill_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="10dp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/speedPulsSB"
-                        />
-
-                    <SeekBar
-                        android:id="@+id/speedColorSB"
-                        android:layout_width="220dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="10dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txtSpeedColor"/>
-
+                        android:background="@color/white" />
                     <TextView
-                        android:id="@+id/txtAlpha"
+                        android:id="@+id/txtSettingsOfMoveMenu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Прозрачность"
+                        android:text="Настройка движения"
+                        android:textSize="25dp"
+                        android:textStyle="bold"
                         android:layout_marginTop="10dp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/speedColorSB"/>
+                        app:layout_constraintTop_toBottomOf="@+id/lineSettingsOfMove"
+                        />
 
+                    <TextView
+                        android:id="@+id/txtCenterR"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Радиус"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txtSettingsOfMoveMenu"/>
                     <SeekBar
-                        android:id="@+id/alphaSB"
+                        android:id="@+id/rCircleSB"
                         android:layout_width="220dp"
                         android:layout_height="40dp"
                         android:layout_marginTop="10dp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txtAlpha"/>
+                        app:layout_constraintTop_toBottomOf="@+id/txtCenterR"/>
+
+
+
+
+
+
+
 
 
                 </android.support.constraint.ConstraintLayout>

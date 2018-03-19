@@ -65,7 +65,6 @@ public class Render implements GLSurfaceView.Renderer {
 
     private float[] _screenProjM = new float[16];
     private float[] _modelM = new float[16];
-    private float _tickTimeXtemp=0;
 
 
     public Render(Context context) {
@@ -73,11 +72,11 @@ public class Render implements GLSurfaceView.Renderer {
     }
 
     public static Bitmap image;
-    
+
 
     private int _aTexCoordLocation;
     private int _uTextureLocation;
-   
+
 
     private int _disp1;
     private int _disp2;
@@ -91,8 +90,6 @@ public class Render implements GLSurfaceView.Renderer {
 
     float dvijenieX = 0.2f;
     float dvijenieY = 0.2f;
-    boolean tuda = true;
-    boolean vverx = true;
     public float randomColorValue1;
     public float randomColorValue2;
     public float randomColorValue3;
@@ -139,16 +136,16 @@ public class Render implements GLSurfaceView.Renderer {
     private int _gradient4_disp2;
     private int _gradient4_u1;
     private int _gradient4_u2;
-    
 
-    float _gradient2_dvijenieX=0.8f;
-    float _gradient2_dvijenieY=0.2f;
 
-    float _gradient3_dvijenieX=0.7f;
-    float _gradient3_dvijenieY=0.8f;
+    float _gradient2_dvijenieX = 0.8f;
+    float _gradient2_dvijenieY = 0.2f;
 
-    float _gradient4_dvijenieX=0.2f ;
-    float _gradient4_dvijenieY=0.8f ;
+    float _gradient3_dvijenieX = 0.7f;
+    float _gradient3_dvijenieY = 0.8f;
+
+    float _gradient4_dvijenieX = 0.2f;
+    float _gradient4_dvijenieY = 0.8f;
 
 
     private int _gradient2_uFirstColorRed;
@@ -218,7 +215,6 @@ public class Render implements GLSurfaceView.Renderer {
 
 
     private int u_kolichestvoGrad;
-   
 
 
     private int _gradient2_randomColor1;
@@ -261,10 +257,6 @@ public class Render implements GLSurfaceView.Renderer {
     private float _gradient4_pulse;
     boolean _gradient4_pulseGo = true;
 
-    private int _uAlpha;
-    private int _gradient2_uAlpha;
-    private int _gradient3_uAlpha;
-    private int _gradient4_uAlpha;
 
     private float _tickTimeX;
     private float _gradient2_tickTimeX;
@@ -278,10 +270,10 @@ public class Render implements GLSurfaceView.Renderer {
     private int _gradient3_uGradientType;
 
     private int _gradient4_uGradientType;
-    float rCenter=0.2f;
-    float _gradient2_rCenter=0.2f;
-    float _gradient3_rCenter=0.2f;
-    float _gradient4_rCenter=0.2f;
+    float rCenter = 0.2f;
+    float _gradient2_rCenter = 0.2f;
+    float _gradient3_rCenter = 0.2f;
+    float _gradient4_rCenter = 0.2f;
     private float _directionX = 1.0f;
     private float _directionY = 1.0f;
     private boolean _randomMoveX = true;
@@ -301,7 +293,6 @@ public class Render implements GLSurfaceView.Renderer {
     private float _gradient4_directionY = 1.0f;
     private boolean _gradient4_randomMoveX = true;
     private boolean _gradient4_randomMoveY = true;
-
 
 
     @Override
@@ -332,7 +323,7 @@ public class Render implements GLSurfaceView.Renderer {
         _uRazColorGreen = GLES20.glGetUniformLocation(_programId, "u_RazColorGreen");
         _uRazColorBlue = GLES20.glGetUniformLocation(_programId, "u_RazColorBlue");
         _uPulse = GLES20.glGetUniformLocation(_programId, "u_Pulse");
-        _uAlpha = GLES20.glGetUniformLocation(_programId, "u_Alpha");
+
 
         _gradient2_disp1 = GLES20.glGetUniformLocation(_programId, "u_gradient2_Disp1");
         _gradient2_disp2 = GLES20.glGetUniformLocation(_programId, "u_gradient2_Disp2");
@@ -351,7 +342,7 @@ public class Render implements GLSurfaceView.Renderer {
         _gradient2_randomColor1 = GLES20.glGetUniformLocation(_programId, "u_gradient2_color1");
         _gradient2_randomColor2 = GLES20.glGetUniformLocation(_programId, "u_gradient2_color2");
         _gradient2_randomColor3 = GLES20.glGetUniformLocation(_programId, "u_gradient2_color3");
-        _gradient2_uAlpha = GLES20.glGetUniformLocation(_programId, "u_gradient2_Alpha");
+
 
         _gradient3_disp1 = GLES20.glGetUniformLocation(_programId, "u_gradient3_Disp1");
         _gradient3_disp2 = GLES20.glGetUniformLocation(_programId, "u_gradient3_Disp2");
@@ -370,7 +361,7 @@ public class Render implements GLSurfaceView.Renderer {
         _gradient3_randomColor1 = GLES20.glGetUniformLocation(_programId, "u_gradient3_color1");
         _gradient3_randomColor2 = GLES20.glGetUniformLocation(_programId, "u_gradient3_color2");
         _gradient3_randomColor3 = GLES20.glGetUniformLocation(_programId, "u_gradient3_color3");
-        _gradient3_uAlpha = GLES20.glGetUniformLocation(_programId, "u_gradient3_Alpha");
+
 
         _gradient4_disp1 = GLES20.glGetUniformLocation(_programId, "u_gradient4_Disp1");
         _gradient4_disp2 = GLES20.glGetUniformLocation(_programId, "u_gradient4_Disp2");
@@ -390,7 +381,7 @@ public class Render implements GLSurfaceView.Renderer {
         _gradient4_randomColor1 = GLES20.glGetUniformLocation(_programId, "u_gradient4_color1");
         _gradient4_randomColor2 = GLES20.glGetUniformLocation(_programId, "u_gradient4_color2");
         _gradient4_randomColor3 = GLES20.glGetUniformLocation(_programId, "u_gradient4_color3");
-        _gradient4_uAlpha = GLES20.glGetUniformLocation(_programId, "u_gradient4_Alpha");
+
 
         _uGradientType = GLES20.glGetUniformLocation(_programId, "u_gradient1_Type");
         _gradient2_uGradientType = GLES20.glGetUniformLocation(_programId, "u_gradient2_Type");
@@ -426,8 +417,8 @@ public class Render implements GLSurfaceView.Renderer {
 
         // вычисляем насколько нужно уменьшить и сдвинуть изображение, чтобы оно влезло в
         // glSurfaceView и было по центру
-        overviewScale =(float) width / (float) height ;
-        overviewScaleY = (float)(height/_imgH);
+        overviewScale = (float) width / (float) height;
+        overviewScaleY = (float) (height / _imgH);
 
         translationX = width / 2.0f - (_imgW / 2.0f) * overviewScale;
         translationY = height / 2.0f - (_imgH / 2.0f) * overviewScale;
@@ -566,10 +557,6 @@ public class Render implements GLSurfaceView.Renderer {
         GLES20.glUniform1f(_gradient4_randomColor2, _gradient4_randomColorValue2);
         GLES20.glUniform1f(_gradient4_randomColor3, _gradient4_randomColorValue3);
 
-        GLES20.glUniform1f(_uAlpha, MainActivity.alphaValue / 100);
-        GLES20.glUniform1f(_gradient2_uAlpha, MainActivity.gradient2_alphaValue / 100f);
-        GLES20.glUniform1f(_gradient3_uAlpha, MainActivity.gradient3_alphaValue / 100f);
-        GLES20.glUniform1f(_gradient4_uAlpha, MainActivity.gradient4_alphaValue / 100f);
 
         GLES20.glUniform1f(_uGradientType, MainActivity.typeofGrad);
         GLES20.glUniform1f(_gradient2_uGradientType, MainActivity.gradient2_typeOfGrad);
@@ -684,55 +671,55 @@ public class Render implements GLSurfaceView.Renderer {
 
 
     public void randomTrans() {
-            rCenter=MainActivity.rCenterValue/5000;
-            dvijenieX = (dvijenieX +  (float) Math.sin(_tickTimeX)* rCenter * _directionX);
-            dvijenieY = (dvijenieY +  (float) Math.cos(_tickTimeX)* rCenter * _directionY);
+        rCenter = MainActivity.rCenterValue / 5000;
+        dvijenieX = (dvijenieX + (float) Math.sin(_tickTimeX) * rCenter * _directionX);
+        dvijenieY = (dvijenieY + (float) Math.cos(_tickTimeX) * rCenter * _directionY);
 
 
-            if (Math.sin(_tickTimeX) < 0.05 && Math.sin(_tickTimeX)>0.0) {
-                if (_randomMoveX) {
-                    float random = (float)Math.random();
-                    if (random<0.75) {
-                        _directionX = _directionX * -1.f;
-                    }
-                    _randomMoveX = false;
+        if (Math.sin(_tickTimeX) < 0.05 && Math.sin(_tickTimeX) > 0.0) {
+            if (_randomMoveX) {
+                float random = (float) Math.random();
+                if (random < 0.75) {
+                    _directionX = _directionX * -1.f;
                 }
-            } else {
-                _randomMoveX = true;
+                _randomMoveX = false;
             }
-            if (Math.cos(_tickTimeX) < 0.05 && Math.cos(_tickTimeX)>0.0) {
-                if (_randomMoveY) {
-                    float random = (float) Math.random();
-                    if (random<0.75) {
-                        _directionY = _directionY * -1.f;
-                    }
-                    _randomMoveY = false;
+        } else {
+            _randomMoveX = true;
+        }
+        if (Math.cos(_tickTimeX) < 0.05 && Math.cos(_tickTimeX) > 0.0) {
+            if (_randomMoveY) {
+                float random = (float) Math.random();
+                if (random < 0.75) {
+                    _directionY = _directionY * -1.f;
                 }
-            } else {
-                _randomMoveY = true;
+                _randomMoveY = false;
             }
+        } else {
+            _randomMoveY = true;
+        }
 
 
-            if (dvijenieX>=1.0){
-               dvijenieX=1.0f;
-               _randomMoveX=!_randomMoveX;
+        if (dvijenieX >= 1.0) {
+            dvijenieX = 1.0f;
+            _randomMoveX = !_randomMoveX;
 
-            }
-            if(dvijenieX<=0){
-                dvijenieX=0.0f;
-                _randomMoveX=!_randomMoveX;
+        }
+        if (dvijenieX <= 0) {
+            dvijenieX = 0.0f;
+            _randomMoveX = !_randomMoveX;
 
-            }
-            if (dvijenieY<=0.0f){
-                dvijenieY=0.0f;
-                _randomMoveY=!_randomMoveY;
+        }
+        if (dvijenieY <= 0.0f) {
+            dvijenieY = 0.0f;
+            _randomMoveY = !_randomMoveY;
 
-            }
-            if (dvijenieY>=1.0){
-                dvijenieY=1.0f;
-                _randomMoveY=!_randomMoveY;
+        }
+        if (dvijenieY >= 1.0) {
+            dvijenieY = 1.0f;
+            _randomMoveY = !_randomMoveY;
 
-            }
+        }
         _tickTimeX += 0.05f;
 
         Log.d("TAG", " ticktimeX = " + dvijenieX);
@@ -740,17 +727,16 @@ public class Render implements GLSurfaceView.Renderer {
     }
 
 
-
     public void grad2_randomTrans() {
-        _gradient2_rCenter=MainActivity.gradient2_rCenterValue/5000;
-        _gradient2_dvijenieX = _gradient2_dvijenieX +  (float) Math.sin(_gradient2_tickTimeX)* _gradient2_rCenter * _gradient2_directionX;
-        _gradient2_dvijenieY = _gradient2_dvijenieY + (float) Math.cos(_gradient2_tickTimeX)* _gradient2_rCenter * _gradient2_directionY;
+        _gradient2_rCenter = MainActivity.gradient2_rCenterValue / 5000;
+        _gradient2_dvijenieX = _gradient2_dvijenieX + (float) Math.sin(_gradient2_tickTimeX) * _gradient2_rCenter * _gradient2_directionX;
+        _gradient2_dvijenieY = _gradient2_dvijenieY + (float) Math.cos(_gradient2_tickTimeX) * _gradient2_rCenter * _gradient2_directionY;
         _gradient2_tickTimeX += 0.05f;
 
         if (Math.sin(_gradient2_tickTimeX) < 0.05 && Math.sin(_gradient2_tickTimeX) > 0.0) {
             if (_gradient2_randomMoveX) {
-                float random = (float)Math.random();
-                if (random<0.75) {
+                float random = (float) Math.random();
+                if (random < 0.75) {
                     _gradient2_directionX = _gradient2_directionX * -1.f;
                 }
                 _gradient2_randomMoveX = false;
@@ -758,10 +744,10 @@ public class Render implements GLSurfaceView.Renderer {
         } else {
             _gradient2_randomMoveX = true;
         }
-        if (Math.cos(_gradient2_tickTimeX) < 0.05 && Math.cos(_gradient2_tickTimeX)>0.0) {
+        if (Math.cos(_gradient2_tickTimeX) < 0.05 && Math.cos(_gradient2_tickTimeX) > 0.0) {
             if (_gradient2_randomMoveY) {
                 float random = (float) Math.random();
-                if (random<0.75) {
+                if (random < 0.75) {
                     _gradient2_directionY = _gradient2_directionY * -1.f;
                 }
                 _gradient2_randomMoveY = false;
@@ -770,20 +756,20 @@ public class Render implements GLSurfaceView.Renderer {
             _gradient2_randomMoveY = true;
         }
 
-        if (_gradient2_dvijenieX>=1.0){
-            _gradient2_dvijenieX=1.0f;
+        if (_gradient2_dvijenieX >= 1.0) {
+            _gradient2_dvijenieX = 1.0f;
             _gradient2_randomMoveX = !_gradient2_randomMoveX;
         }
-        if(_gradient2_dvijenieX<=0){
-            _gradient2_dvijenieX=0.0f;
+        if (_gradient2_dvijenieX <= 0) {
+            _gradient2_dvijenieX = 0.0f;
             _gradient2_randomMoveX = !_gradient2_randomMoveX;
         }
-        if (_gradient2_dvijenieY<=0.0f){
-            _gradient2_dvijenieY=0.0f;
+        if (_gradient2_dvijenieY <= 0.0f) {
+            _gradient2_dvijenieY = 0.0f;
             _gradient2_randomMoveY = !_gradient2_randomMoveY;
         }
-        if (_gradient2_dvijenieY>=1.0){
-            _gradient2_dvijenieY=1.0f;
+        if (_gradient2_dvijenieY >= 1.0) {
+            _gradient2_dvijenieY = 1.0f;
             _gradient2_randomMoveY = !_gradient2_randomMoveY;
         }
 
@@ -791,15 +777,15 @@ public class Render implements GLSurfaceView.Renderer {
     }
 
     public void grad3_randomTrans() {
-        _gradient3_rCenter=MainActivity.gradient3_rCenterValue/5000;
-        _gradient3_dvijenieX = _gradient3_dvijenieX +  (float) Math.sin(_gradient3_tickTimeX)* _gradient3_rCenter * _gradient3_directionX;
-        _gradient3_dvijenieY = _gradient3_dvijenieY +  (float) Math.cos(_gradient3_tickTimeX)* _gradient3_rCenter * _gradient3_directionY;
+        _gradient3_rCenter = MainActivity.gradient3_rCenterValue / 5000;
+        _gradient3_dvijenieX = _gradient3_dvijenieX + (float) Math.sin(_gradient3_tickTimeX) * _gradient3_rCenter * _gradient3_directionX;
+        _gradient3_dvijenieY = _gradient3_dvijenieY + (float) Math.cos(_gradient3_tickTimeX) * _gradient3_rCenter * _gradient3_directionY;
         _gradient3_tickTimeX += 0.05f;
 
         if (Math.sin(_gradient3_tickTimeX) < 0.05 && Math.sin(_gradient3_tickTimeX) > 0.0) {
             if (_gradient3_randomMoveX) {
-                float random = (float)Math.random();
-                if (random<0.5) {
+                float random = (float) Math.random();
+                if (random < 0.5) {
                     _gradient3_directionX = _gradient3_directionX * -1.f;
                 }
                 _gradient3_randomMoveX = false;
@@ -810,7 +796,7 @@ public class Render implements GLSurfaceView.Renderer {
         if (Math.cos(_gradient3_tickTimeX) < 0.05 && Math.cos(_gradient3_tickTimeX) > 0.0) {
             if (_gradient3_randomMoveY) {
                 float random = (float) Math.random();
-                if (random<0.5) {
+                if (random < 0.5) {
                     _gradient3_directionY = _gradient3_directionY * -1.f;
                 }
                 _gradient3_randomMoveY = false;
@@ -819,36 +805,36 @@ public class Render implements GLSurfaceView.Renderer {
             _gradient3_randomMoveY = true;
         }
 
-        if (_gradient3_dvijenieX>=1.0){
-            _gradient3_dvijenieX=1.0f;
+        if (_gradient3_dvijenieX >= 1.0) {
+            _gradient3_dvijenieX = 1.0f;
             _gradient3_randomMoveX = !_gradient3_randomMoveX;
 
         }
-        if(_gradient3_dvijenieX<=0){
-            _gradient3_dvijenieX=0.0f;
+        if (_gradient3_dvijenieX <= 0) {
+            _gradient3_dvijenieX = 0.0f;
             _gradient3_randomMoveX = !_gradient3_randomMoveX;
         }
-        if (_gradient3_dvijenieY<=0.0f){
-            _gradient3_dvijenieY=0.0f;
+        if (_gradient3_dvijenieY <= 0.0f) {
+            _gradient3_dvijenieY = 0.0f;
             _gradient3_randomMoveY = !_gradient3_randomMoveY;
         }
-        if (_gradient3_dvijenieY>=1.0){
-            _gradient3_dvijenieY=1.0f;
+        if (_gradient3_dvijenieY >= 1.0) {
+            _gradient3_dvijenieY = 1.0f;
             _gradient3_randomMoveY = !_gradient3_randomMoveY;
         }
 
     }
 
     public void grad4_randomTrans() {
-        _gradient4_rCenter=MainActivity.gradient4_rCenterValue/5000;
-        _gradient4_dvijenieX = _gradient4_dvijenieX + (float) Math.sin(_gradient4_tickTimeX)* _gradient4_rCenter * _gradient4_directionX;
-        _gradient4_dvijenieY = _gradient4_dvijenieY + (float) Math.cos(_gradient4_tickTimeX)* _gradient4_rCenter * _gradient4_directionY;
+        _gradient4_rCenter = MainActivity.gradient4_rCenterValue / 5000;
+        _gradient4_dvijenieX = _gradient4_dvijenieX + (float) Math.sin(_gradient4_tickTimeX) * _gradient4_rCenter * _gradient4_directionX;
+        _gradient4_dvijenieY = _gradient4_dvijenieY + (float) Math.cos(_gradient4_tickTimeX) * _gradient4_rCenter * _gradient4_directionY;
         _gradient4_tickTimeX += 0.05f;
 
         if (Math.sin(_gradient4_tickTimeX) < 0.05 && Math.sin(_gradient4_tickTimeX) > 0.0) {
             if (_gradient4_randomMoveX) {
-                float random = (float)Math.random();
-                if (random<0.5) {
+                float random = (float) Math.random();
+                if (random < 0.5) {
                     _gradient4_directionX = _gradient4_directionX * -1.f;
                 }
                 _gradient4_randomMoveX = false;
@@ -859,7 +845,7 @@ public class Render implements GLSurfaceView.Renderer {
         if (Math.cos(_gradient4_tickTimeX) < 0.05 && Math.cos(_gradient4_tickTimeX) > 0.0) {
             if (_gradient4_randomMoveY) {
                 float random = (float) Math.random();
-                if (random<0.5) {
+                if (random < 0.5) {
                     _gradient4_directionY = _gradient4_directionY * -1.f;
                 }
                 _gradient4_randomMoveY = false;
@@ -868,20 +854,20 @@ public class Render implements GLSurfaceView.Renderer {
             _gradient4_randomMoveY = true;
         }
 
-        if (_gradient4_dvijenieX>=1.0){
-            _gradient4_dvijenieX=1.0f;
+        if (_gradient4_dvijenieX >= 1.0) {
+            _gradient4_dvijenieX = 1.0f;
             _gradient4_randomMoveX = !_gradient4_randomMoveX;
         }
-        if(_gradient4_dvijenieX<=0){
-            _gradient4_dvijenieX=0.0f;
+        if (_gradient4_dvijenieX <= 0) {
+            _gradient4_dvijenieX = 0.0f;
             _gradient4_randomMoveX = !_gradient4_randomMoveX;
         }
-        if (_gradient4_dvijenieY<=0.0f){
-            _gradient4_dvijenieY=0.0f;
+        if (_gradient4_dvijenieY <= 0.0f) {
+            _gradient4_dvijenieY = 0.0f;
             _gradient4_randomMoveY = !_gradient4_randomMoveY;
         }
-        if (_gradient4_dvijenieY>=1.0){
-            _gradient4_dvijenieY=1.0f;
+        if (_gradient4_dvijenieY >= 1.0) {
+            _gradient4_dvijenieY = 1.0f;
             _gradient4_randomMoveY = !_gradient4_randomMoveY;
         }
 

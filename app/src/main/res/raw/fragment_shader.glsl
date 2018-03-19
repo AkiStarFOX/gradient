@@ -166,7 +166,8 @@ void main(void) {
         gradient1_colorRed = u_color1+clamp((u_SecondColorRed+u_RazColorRed*formula1),-1.0,1.0);
         gradient1_colorGreen = u_color2+clamp((u_SecondColorGreen+u_RazColorGreen*formula1),-1.0,1.0);
         gradient1_colorBlue = u_color3+clamp((u_SecondColorBlue+u_RazColorBlue*formula1),-1.0,1.0);
-        gradient1_alpha = 1.0-(u_Alpha);
+        gradient1_alpha=1.0;
+
     }
 
     if (u_gradient1_Type == 2.0){
@@ -174,6 +175,7 @@ void main(void) {
         gradient1_colorGreen = u_color2+clamp((u_SecondColorGreen+u_RazColorGreen*formula_Tan),-1.0,1.0);
         gradient1_colorBlue = u_color3+clamp((u_SecondColorBlue+u_RazColorBlue*formula_Tan),-1.0,1.0);
         gradient1_alpha=1.0;
+
     }
 
     if (u_gradient1_Type==3.0){
@@ -188,7 +190,7 @@ void main(void) {
             gradient2_colorRed = u_gradient2_color1+clamp((u_gradient2_SecondColorRed+u_gradient2_RazColorRed*formula2),-1.0,1.0);
             gradient2_colorGreen = u_gradient2_color2+clamp((u_gradient2_SecondColorGreen+u_gradient2_RazColorGreen*formula2),-1.0,1.0);
             gradient2_colorBlue = u_gradient2_color3+clamp((u_gradient2_SecondColorBlue+u_gradient2_RazColorBlue*formula2),-1.0,1.0);
-            gradient2_alpha = 1.0-(u_gradient2_Alpha);
+            gradient2_alpha = 1.0;
         }
 
         if (u_gradient2_Type==2.0){
@@ -234,7 +236,7 @@ void main(void) {
             gradient4_colorRed =u_gradient4_color1+clamp((u_gradient4_SecondColorRed+u_gradient4_RazColorRed*formula4),-1.0,1.0);
             gradient4_colorGreen = u_gradient4_color2+clamp((u_gradient4_SecondColorGreen+u_gradient4_RazColorGreen*formula4),-1.0,1.0);
             gradient4_colorBlue = u_gradient4_color3+clamp((u_gradient4_SecondColorBlue+u_gradient4_RazColorBlue*formula4),-1.0,1.0);
-            gradient4_alpha = 1.0-(u_gradient4_Alpha);
+            gradient4_alpha = 1.0;
         }
 
         if (u_gradient4_Type==2.0){
@@ -254,19 +256,11 @@ void main(void) {
     }
 
     c = mix(vec3(0,0,0),vec3(gradient1_colorRed,gradient1_colorGreen,gradient1_colorBlue),gradient1_alpha) ;
-     c = mix(c,vec3(gradient2_colorRed,gradient2_colorGreen,gradient2_colorBlue),gradient2_alpha);
-       c = mix(c,vec3(gradient3_colorRed,gradient3_colorGreen,gradient3_colorBlue),gradient3_alpha);
-       c = mix(c,vec3(gradient4_colorRed,gradient4_colorGreen,gradient4_colorBlue),gradient4_alpha);
+    c = mix(c,vec3(gradient2_colorRed,gradient2_colorGreen,gradient2_colorBlue),gradient2_alpha);
+    c = mix(c,vec3(gradient3_colorRed,gradient3_colorGreen,gradient3_colorBlue),gradient3_alpha);
+    c = mix(c,vec3(gradient4_colorRed,gradient4_colorGreen,gradient4_colorBlue),gradient4_alpha);
 
 
-
-
-//
-//	gl_FragColor = vec4( clamp((gradient1_colorRed+gradient2_colorRed+gradient3_colorRed+gradient4_colorRed),-1.0,1.0),
-//	clamp((gradient1_colorGreen+gradient2_colorGreen+gradient3_colorGreen+gradient4_colorGreen),-1.0,1.0),
-//	clamp((gradient1_colorBlue+gradient2_colorBlue+gradient3_colorBlue+gradient4_colorBlue),-1.0,1.0),
-//	clamp((gradient1_alpha+gradient2_alpha+gradient3_alpha+gradient4_alpha),0.0,1.0));
-//
      gl_FragColor = vec4(c,1.0);
 
 

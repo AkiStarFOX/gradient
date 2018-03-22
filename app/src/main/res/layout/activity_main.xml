@@ -191,6 +191,64 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/txtColor1"/>
+
+                    <RadioGroup
+                        android:id="@+id/rbTypeOfColor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btnOk">
+
+                    <RadioButton
+                        android:id="@+id/rbAchromaticType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Achromatic"/>
+
+                    <RadioButton
+                        android:id="@+id/rbComplementaryType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Complementary"/>
+
+                    <RadioButton
+                        android:id="@+id/rbMonochromaticType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Monochromatic"/>
+
+                    <RadioButton
+                        android:id="@+id/rbAnalogousType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Analogous"/>
+
+                    <RadioButton
+                        android:id="@+id/rbCompoundType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Compound"/>
+                    <RadioButton
+                        android:id="@+id/rbTriadicType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Triadic"/>
+                    <RadioButton
+                        android:id="@+id/rbSquareType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Square"/>
+                    </RadioGroup>
                     <TextView
                         android:id="@+id/txtSpeedColor"
                         android:layout_width="wrap_content"
@@ -198,7 +256,7 @@
                         android:text="Скорость переливания"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/btnOk"
+                        app:layout_constraintTop_toBottomOf="@+id/rbTypeOfColor"
                         />
 
                     <SeekBar
@@ -264,6 +322,28 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="atan(x^x-y)"/>
+                        <RadioButton
+                            android:id="@+id/rbFormula4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="формула 4"/>
+
+                        <RadioButton
+                            android:id="@+id/rbFormula5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="формула 5"/>
+
+                        <RadioButton
+                            android:id="@+id/rbFormula6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="формула 6"/>
+
+
 
 
                     </RadioGroup>

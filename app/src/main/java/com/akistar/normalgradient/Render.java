@@ -17,15 +17,24 @@ import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
 import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL;
 import javax.microedition.khronos.opengles.GL10;
 
 import static android.opengl.GLES10.GL_ALPHA_TEST;
 import static android.opengl.GLES10.GL_ONE_MINUS_SRC_ALPHA;
+import static android.opengl.GLES10.GL_TEXTURE;
+import static android.opengl.GLES10.glDisable;
+import static android.opengl.GLES20.GL_ACTIVE_TEXTURE;
 import static android.opengl.GLES20.GL_BLEND;
 import static android.opengl.GLES20.GL_SRC_ALPHA;
+import static android.opengl.GLES20.GL_TEXTURE0;
+import static android.opengl.GLES20.GL_TEXTURE_2D;
 import static android.opengl.GLES20.glBlendFunc;
 import static android.opengl.GLES20.glEnable;
 import static java.lang.Math.PI;
+import static java.lang.Math.floorDiv;
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
 
 /**
  * Created by AkiStar on 05.03.2018.
@@ -59,12 +68,19 @@ public class Render implements GLSurfaceView.Renderer {
     private int _aPositionLocation;
     private int _uProjMLocation;
     private int _uModelMLocation;
+    private int _aPositionLocation2;
+    private int _uProjMLocation2;
+    private int _uModelMLocation2;
     public FloatBuffer _vertices;
     public FloatBuffer _texCoords;
     public ShortBuffer _indices;
 
     private float[] _screenProjM = new float[16];
+    private float[] _screenProjM2 = new float[16];
     private float[] _modelM = new float[16];
+    private int _programId2;
+    private int _aTexCoordLocation2;
+    private int _uTextureLocation2;
 
 
     public Render(Context context) {
@@ -293,6 +309,7 @@ public class Render implements GLSurfaceView.Renderer {
     private float _gradient4_directionY = 1.0f;
     private boolean _gradient4_randomMoveX = true;
     private boolean _gradient4_randomMoveY = true;
+    public FBO fbo = new FBO();
 
 
     @Override
@@ -301,6 +318,22 @@ public class Render implements GLSurfaceView.Renderer {
         int vertextShaderId = ShaderUtils.createShader(_context, GLES20.GL_VERTEX_SHADER, R.raw.vertex_shader);
         int fragmentShaderId = ShaderUtils.createShader(_context, GLES20.GL_FRAGMENT_SHADER, R.raw.fragment_shader);
         _programId = ShaderUtils.createProgram(vertextShaderId, fragmentShaderId);
+        int vertextShaderIdScreen = ShaderUtils.createShader(_context, GLES20.GL_VERTEX_SHADER, R.raw.vertex_shader);
+        int fragmentShaderIdScreen = ShaderUtils.createShader(_context, GLES20.GL_FRAGMENT_SHADER, R.raw.screen_fs);
+        _programId2 = ShaderUtils.createProgram(vertextShaderIdScreen, fragmentShaderIdScreen);
+
+
+        _aPositionLocation2 = GLES20.glGetAttribLocation(_programId2, "a_Position");
+        _uProjMLocation2 = GLES20.glGetUniformLocation(_programId2, "u_ProjM");
+        _uModelMLocation2 = GLES20.glGetUniformLocation(_programId2, "u_ModelM");
+        _aTexCoordLocation2 = GLES20.glGetAttribLocation(_programId2, "a_TexCoord");
+        _uTextureLocation2 = GLES20.glGetUniformLocation(_programId2, "u_Texture");
+
+
+
+
+
+
         _aPositionLocation = GLES20.glGetAttribLocation(_programId, "a_Position");
         _uProjMLocation = GLES20.glGetUniformLocation(_programId, "u_ProjM");
         _uModelMLocation = GLES20.glGetUniformLocation(_programId, "u_ModelM");
@@ -405,6 +438,8 @@ public class Render implements GLSurfaceView.Renderer {
 
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+        formula();
+
 
     }
 
@@ -413,7 +448,8 @@ public class Render implements GLSurfaceView.Renderer {
         _glViewWidth = width;
         _glViewHeight = height;
 
-        Matrix.orthoM(_screenProjM, 0, 0, width, height, 0, 0, 1);
+        Matrix.orthoM(_screenProjM, 0, 0, width,height  ,0, 0, 1);
+        Matrix.orthoM(_screenProjM2, 0, 0, width,0  ,height, 0, 1);
 
         // вычисляем насколько нужно уменьшить и сдвинуть изображение, чтобы оно влезло в
         // glSurfaceView и было по центру
@@ -428,11 +464,27 @@ public class Render implements GLSurfaceView.Renderer {
         Matrix.setIdentityM(_modelM, 0);
 //        Matrix.translateM(_modelM, 0, translationX, translationY, 0);
 //        Matrix.scaleM(_modelM, 0,overviewScale, overviewScale, 1.0f);
+        fbo.init(_glViewWidth,_glViewHeight,false);
 
+    }
+    private void shaderParamsScreen(){
+        GLES20.glActiveTexture(GL_TEXTURE0);
+        GLES20.glBindTexture(GL_TEXTURE_2D,fbo.getTexture());
+        GLES20.glUniform1i(_uTextureLocation2,0);
+        GLES20.glUniformMatrix4fv(_uProjMLocation2, 1, false, _screenProjM2, 0);
+        GLES20.glUniformMatrix4fv(_uModelMLocation2, 1, false, _modelM, 0);
+
+        GLES20.glEnableVertexAttribArray(_aPositionLocation2);
+        GLES20.glVertexAttribPointer(_aPositionLocation2, 3, GLES20.GL_FLOAT, false, 0, _vertices);
+
+        GLES20.glEnableVertexAttribArray(_aTexCoordLocation2);
+        GLES20.glVertexAttribPointer(_aTexCoordLocation2, 2, GLES20.GL_FLOAT, false, 0, _texCoords);
     }
 
     private void shaderParams() {
         float[] verts = arrayFromRectF(new RectF(0, 0, _glViewWidth, _glViewHeight));
+
+
 
         _vertices = ByteBuffer.allocateDirect(verts.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
         _vertices.put(verts);
@@ -445,26 +497,10 @@ public class Render implements GLSurfaceView.Renderer {
         _texCoords = ByteBuffer.allocateDirect(texCoords.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
         _texCoords.put(texCoords);
         _texCoords.position(0);
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-        GLES20.glTexParameteri(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
-        GLES20.glTexParameteri(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
-        GLES20.glTexParameteri(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);
-        GLES20.glTexParameteri(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);
-        GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, _glViewWidth, _glViewHeight, 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, null);
-
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
 
 
-        GLES20.glUniform1i(_uTextureLocation, 0);
 
 
-        glEnable(GL_ALPHA_TEST);
-
-        glEnable(GL_BLEND);
-
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         GLES20.glUniformMatrix4fv(_uProjMLocation, 1, false, _screenProjM, 0);
         GLES20.glUniformMatrix4fv(_uModelMLocation, 1, false, _modelM, 0);
@@ -484,9 +520,9 @@ public class Render implements GLSurfaceView.Renderer {
         GLES20.glUniform1f(randomColor3, randomColorValue3);
 
 
-        GLES20.glUniform1f(_uFirstColorRed, _firstColorRed / 255f);
-        GLES20.glUniform1f(_uFirstColorGreen, _firstColorGreen / 255f);
-        GLES20.glUniform1f(_uFirstColorBlue, _firstColorBlue / 255f);
+        GLES20.glUniform1f(_uFirstColorRed, _firstColorRed );
+        GLES20.glUniform1f(_uFirstColorGreen, _firstColorGreen );
+        GLES20.glUniform1f(_uFirstColorBlue, _firstColorBlue );
         GLES20.glUniform1f(_uSecondColorRed, _secondColorRed / 255f);
         GLES20.glUniform1f(_uSecondColorGreen, _secondColorGreen / 255f);
         GLES20.glUniform1f(_uSecondColorBlue, _secondColorBlue / 255f);
@@ -510,9 +546,9 @@ public class Render implements GLSurfaceView.Renderer {
         GLES20.glUniform1f(_gradient4_u1, _gradient4_dvijenieX);
         GLES20.glUniform1f(_gradient4_u2, _gradient4_dvijenieY);
 
-        GLES20.glUniform1f(_gradient2_uFirstColorRed, _gradient2_firstColorRed / 255f);
-        GLES20.glUniform1f(_gradient2_uFirstColorGreen, _gradient2_firstColorGreen / 255f);
-        GLES20.glUniform1f(_gradient2_uFirstColorBlue, _gradient2_firstColorBlue / 255f);
+        GLES20.glUniform1f(_gradient2_uFirstColorRed, _gradient2_firstColorRed );
+        GLES20.glUniform1f(_gradient2_uFirstColorGreen, _gradient2_firstColorGreen );
+        GLES20.glUniform1f(_gradient2_uFirstColorBlue, _gradient2_firstColorBlue );
         GLES20.glUniform1f(_gradient2_uSecondColorRed, _gradient2_secondColorRed / 255f);
         GLES20.glUniform1f(_gradient2_uSecondColorGreen, _gradient2_secondColorGreen / 255f);
         GLES20.glUniform1f(_gradient2_uSecondColorBlue, _gradient2_secondColorBlue / 255f);
@@ -521,9 +557,9 @@ public class Render implements GLSurfaceView.Renderer {
         GLES20.glUniform1f(_gradient2_uRazColorBlue, _gradient2_razColorBlue / 255f);
 
 
-        GLES20.glUniform1f(_gradient3_uFirstColorRed, _gradient3_firstColorRed / 255f);
-        GLES20.glUniform1f(_gradient3_uFirstColorGreen, _gradient3_firstColorGreen / 255f);
-        GLES20.glUniform1f(_gradient3_uFirstColorBlue, _gradient3_firstColorBlue / 255f);
+        GLES20.glUniform1f(_gradient3_uFirstColorRed, _gradient3_firstColorRed );
+        GLES20.glUniform1f(_gradient3_uFirstColorGreen, _gradient3_firstColorGreen );
+        GLES20.glUniform1f(_gradient3_uFirstColorBlue, _gradient3_firstColorBlue);
         GLES20.glUniform1f(_gradient3_uSecondColorRed, _gradient3_secondColorRed / 255f);
         GLES20.glUniform1f(_gradient3_uSecondColorGreen, _gradient3_secondColorGreen / 255f);
         GLES20.glUniform1f(_gradient3_uSecondColorBlue, _gradient3_secondColorBlue / 255f);
@@ -532,9 +568,9 @@ public class Render implements GLSurfaceView.Renderer {
         GLES20.glUniform1f(_gradient3_uRazColorBlue, _gradient3_razColorBlue / 255f);
         GLES20.glUniform1f(_gradient3_uPulse, _gradient3_pulse);
 
-        GLES20.glUniform1f(_gradient4_uFirstColorRed, _gradient4_firstColorRed / 255f);
-        GLES20.glUniform1f(_gradient4_uFirstColorGreen, _gradient4_firstColorGreen / 255f);
-        GLES20.glUniform1f(_gradient4_uFirstColorBlue, _gradient4_firstColorBlue / 255f);
+        GLES20.glUniform1f(_gradient4_uFirstColorRed, _gradient4_firstColorRed );
+        GLES20.glUniform1f(_gradient4_uFirstColorGreen, _gradient4_firstColorGreen);
+        GLES20.glUniform1f(_gradient4_uFirstColorBlue, _gradient4_firstColorBlue );
         GLES20.glUniform1f(_gradient4_uSecondColorRed, _gradient4_secondColorRed / 255f);
         GLES20.glUniform1f(_gradient4_uSecondColorGreen, _gradient4_secondColorGreen / 255f);
         GLES20.glUniform1f(_gradient4_uSecondColorBlue, _gradient4_secondColorBlue / 255f);
@@ -584,23 +620,23 @@ public class Render implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl10) {
 
-        int color1 = Color.parseColor(MainActivity.color1Value);
-        _firstColorRed = (color1 >> 16) & 0xff;
-        _firstColorGreen = (color1 >> 8) & 0xff;
-        _firstColorBlue = (color1) & 0xff;
+
+        _firstColorRed = MainActivity.firstColorRGB.r;
+        _firstColorGreen =  MainActivity.firstColorRGB.g;
+        _firstColorBlue =  MainActivity.firstColorRGB.b;
         int color2 = Color.parseColor(MainActivity.color2Value);
         _secondColorRed = (color2 >> 16) & 0xff;
         _secondColorGreen = (color2 >> 8) & 0xff;
         _secondColorBlue = (color2) & 0xff;
 
-        _razColorRed = _firstColorRed - _secondColorRed;
-        _razColorGreen = _firstColorGreen - _secondColorGreen;
-        _razColorBlue = _firstColorBlue - _secondColorBlue;
+        _razColorRed = _firstColorRed*255 - _secondColorRed;
+        _razColorGreen = _firstColorGreen*255 - _secondColorGreen;
+        _razColorBlue = _firstColorBlue*255 - _secondColorBlue;
 
-        int _gradient2_color1 = Color.parseColor(MainActivity.gradient2_color1Value);
-        _gradient2_firstColorRed = (_gradient2_color1 >> 16) & 0xff;
-        _gradient2_firstColorGreen = (_gradient2_color1 >> 8) & 0xff;
-        _gradient2_firstColorBlue = (_gradient2_color1) & 0xff;
+
+        _gradient2_firstColorRed = MainActivity.secondColorRGB.r;
+        _gradient2_firstColorGreen =  MainActivity.secondColorRGB.g;
+        _gradient2_firstColorBlue =  MainActivity.secondColorRGB.b;
         int _gradient2_color2 = Color.parseColor(MainActivity.gradient2_color2Value);
         _gradient2_secondColorRed = (_gradient2_color2 >> 16) & 0xff;
         _gradient2_secondColorGreen = (_gradient2_color2 >> 8) & 0xff;
@@ -610,10 +646,10 @@ public class Render implements GLSurfaceView.Renderer {
         _gradient2_razColorGreen = _gradient2_firstColorGreen - _gradient2_secondColorGreen;
         _gradient2_razColorBlue = _gradient2_firstColorBlue - _gradient2_secondColorBlue;
 
-        int _gradient3_color1 = Color.parseColor(MainActivity.gradient3_color1Value);
-        _gradient3_firstColorRed = (_gradient3_color1 >> 16) & 0xff;
-        _gradient3_firstColorGreen = (_gradient3_color1 >> 8) & 0xff;
-        _gradient3_firstColorBlue = (_gradient3_color1) & 0xff;
+
+        _gradient3_firstColorRed = MainActivity.thirdColorRGB.r;
+        _gradient3_firstColorGreen =  MainActivity.thirdColorRGB.g;
+        _gradient3_firstColorBlue =  MainActivity.thirdColorRGB.b;
         int _gradient3_color2 = Color.parseColor(MainActivity.gradient3_color2Value);
         _gradient3_secondColorRed = (_gradient3_color2 >> 16) & 0xff;
         _gradient3_secondColorGreen = (_gradient3_color2 >> 8) & 0xff;
@@ -623,10 +659,10 @@ public class Render implements GLSurfaceView.Renderer {
         _gradient3_razColorGreen = _gradient3_firstColorGreen - _gradient3_secondColorGreen;
         _gradient3_razColorBlue = _gradient3_firstColorBlue - _gradient3_secondColorBlue;
 
-        int _gradient4_color1 = Color.parseColor(MainActivity.gradient4_color1Value);
-        _gradient4_firstColorRed = (_gradient4_color1 >> 16) & 0xff;
-        _gradient4_firstColorGreen = (_gradient4_color1 >> 8) & 0xff;
-        _gradient4_firstColorBlue = (_gradient4_color1) & 0xff;
+
+        _gradient4_firstColorRed = MainActivity.fourthColorRGB.r;
+        _gradient4_firstColorGreen =MainActivity.fourthColorRGB.g;
+        _gradient4_firstColorBlue = MainActivity.fourthColorRGB.b;
         int _gradient4_color2 = Color.parseColor(MainActivity.gradient4_color2Value);
         _gradient4_secondColorRed = (_gradient4_color2 >> 16) & 0xff;
         _gradient4_secondColorGreen = (_gradient4_color2 >> 8) & 0xff;
@@ -637,12 +673,23 @@ public class Render implements GLSurfaceView.Renderer {
         _gradient4_razColorBlue = _gradient4_firstColorBlue - _gradient4_secondColorBlue;
 
 
-        GLES20.glClearColor(0, 0, 0, 1);
+        fbo.render(new RenderRoutine() {
+            @Override
+            public void render() {
+                GLES20.glClearColor(1, 1, 1, 1);
+                GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+                GLES20.glUseProgram(_programId);
+                GLES20.glViewport(0, 0, _glViewWidth, _glViewHeight);
+                shaderParams();
+                GLES20.glDrawElements(GLES20.GL_TRIANGLES, 6, GLES20.GL_UNSIGNED_SHORT, _indices);
+
+            }
+        });
+        GLES20.glClearColor(1, 1, 1, 1);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
-        GLES20.glUseProgram(_programId);
+        GLES20.glUseProgram(_programId2);
         GLES20.glViewport(0, 0, _glViewWidth, _glViewHeight);
-        GLES20.glUseProgram(_programId);
-        shaderParams();
+        shaderParamsScreen();
         GLES20.glDrawElements(GLES20.GL_TRIANGLES, 6, GLES20.GL_UNSIGNED_SHORT, _indices);
 
 
@@ -722,7 +769,7 @@ public class Render implements GLSurfaceView.Renderer {
         }
         _tickTimeX += 0.05f;
 
-        Log.d("TAG", " ticktimeX = " + dvijenieX);
+
 
     }
 
@@ -1116,24 +1163,27 @@ public class Render implements GLSurfaceView.Renderer {
             _gradient4_pulseGo = true;
         }
     }
-//    public void formula(){
-//        float  x = 1.0f/image.getWidth();
-//        float y = 1.0f/image.getHeight();
-//        float u_Disp1=1.0f;
-//        float u_Disp2=1.0f;
-//        float u_u1=1.0f/image.getWidth();
-//        float u_u2=1.0f/image.getHeight();
-//        float u_Disp12= 1.0f;
-//        float p = 0.5f;
-//        float x1 = (float)((pow((x-u_u1),2.0))/pow(u_Disp1,2.0));
-//        float y1 = (float)((pow((y-u_u2),2.0))/pow(u_Disp2,2.0));
-//        float xy = (float)(p * ((2.0*(x-u_u1)*(y-u_u2))/(u_Disp1*u_Disp2)));
-//        float stepenE = (float)(-1.0*(1.0/(2.0*(1.0-pow(p,2.0)))))*(x1-xy+y1);
-//        float e = 2.71828f;
-//        float result = (float)((1.0 /(2.0 * 3.14 * u_Disp1 * u_Disp2 *sqrt((1.0-pow(p,2.0))))) * pow(e,stepenE));
-//        float result2 = (float)(result/(1.0/(2.0*3.14*u_Disp1*u_Disp2*sqrt(1.0-pow(p,2.0)))));
-//        Log.d("TAG","result = " + result );
-//        Log.d("TAG","resul2 = " + result2 );
-//
-//    }
+    public void formula(){
+//        for (int i=0;i<1280;i++){
+//            for (int h = 0;h<780;h++){
+//                float  x = i;
+//                float y = h;
+//                float u_Disp1=1.0f;
+//                float u_Disp2=1.0f;
+//                float u_u1=0.25f;
+//                float u_u2=0.25f;
+//                float p = 0.5f;
+//                float x1 = (float)((pow((x-u_u1),2.0))/pow(u_Disp1,2.0));
+//                float y1 = (float)((pow((y-u_u2),2.0))/pow(u_Disp2,2.0));
+//                float xy = (float)(p * ((2.0*(x-u_u1)*(y-u_u2))/(u_Disp1*u_Disp2)));
+//                float stepenE = (float)(-1.0*(1.0/(2.0*(1.0-pow(p,2.0)))))*(x1-xy+y1);
+//                float e = 2.71828f;
+//                float result = (float)((1.0 /(2.0 * 3.14 * u_Disp1 * u_Disp2 *sqrt((1.0-pow(p,2.0))))) * pow(e,stepenE));
+//                float result2 = (float)(result/(1.0/(2.0*3.14*u_Disp1*u_Disp2*sqrt(1.0-pow(p,2.0)))));
+//                Log.d("res","resul2 = " + result2 );
+//            }
+//        }
+
+
+    }
 }
